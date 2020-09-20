@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.crazygaming.staysafe.SQLBActivity;
-
 public class LoginActivity extends SQLBActivity
 {
     SQLConnection sqlConn;
@@ -56,7 +54,9 @@ public class LoginActivity extends SQLBActivity
     @Override
     public void CloseForm()
     {
+        ConsumerOrderActivity cOrdActivity = new ConsumerOrderActivity();
         finish();
+        stringFromJNI();
     }
 
     /**
