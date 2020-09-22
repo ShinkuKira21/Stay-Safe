@@ -1,10 +1,3 @@
 #include <jni.h>
-#include <string>
+#include "functions.cpp"
 
-extern "C" JNIEXPORT jstring JNICALL
-Java_com_crazygaming_staysafe_LoginActivity_stringFromJNI(
-        JNIEnv* env,
-        jobject /* this */) {
-    std::string hello = "Hello from C++";
-    return env->NewStringUTF(hello.c_str());
-}

@@ -1,3 +1,8 @@
+/*
+ * THIS CLASS IS TO HOLD BASE CLASS FUNCTION OPERATIONS.
+ * VIRTUALS AND OTHER THINGS WILL BE STORED HERE.
+ */
+
 package com.crazygaming.staysafe;
 
 import android.widget.Button;
@@ -8,14 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SQLBActivity extends AppCompatActivity
 {
-    protected Boolean sqlBEndResult = false;
     protected TextView error, results;
     protected EditText etUsername, etPassword;
     protected Button login;
     protected String[] userInfo;
 
-    protected void CloseForm()
-    {
+    protected void SaveRecords(String[] resultSet) { }
 
-    }
+    protected void CloseForm(String action) { }
 }
+

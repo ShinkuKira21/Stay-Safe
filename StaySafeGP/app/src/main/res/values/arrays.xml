@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer-array name="cat_imgs">
+        <item>@drawable/cat_drinks</item>
+        <item>@drawable/cat_food</item>
+        <item>@drawable/cat_snacks</item>
+    </integer-array>
+
+</resources>

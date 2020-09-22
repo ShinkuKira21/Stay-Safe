@@ -20,62 +20,58 @@
 
     <TextView
         android:id="@+id/tvCategory"
-        android:layout_width="150dp"
-        android:layout_height="49dp"
+        android:layout_width="190dp"
+        android:layout_height="47dp"
         android:layout_marginTop="16dp"
         android:textAllCaps="false"
         android:textSize="36sp"
         android:textStyle="bold"
         android:typeface="normal"
-        app:layout_constraintBottom_toTopOf="@+id/cvProduct_name"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/searchView"
         app:layout_constraintStart_toStartOf="@+id/searchView"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="@string/app_name" />
+        tools:text="Categories" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvProduct_name"
-        android:layout_width="321dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="96dp"
-        android:visibility="visible"
+    <LinearLayout
+        android:id="@+id/layoutCategoryCol"
+        android:layout_width="332dp"
+        android:layout_height="629dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/searchView"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/searchView"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintTop_toBottomOf="@+id/tvCategory"
+        app:layout_constraintVertical_bias="0.0" />
 
-        <Button
-            android:id="@+id/actProduct_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
-    </androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/actSignOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="SignOut"
+        android:text="@string/app_name"
+        app:layout_constraintBottom_toTopOf="@+id/layoutCategoryCol"
+        app:layout_constraintEnd_toStartOf="@+id/tvCategory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
     <Button
         android:id="@+id/actBasket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
         android:text="@string/app_name"
-        app:layout_constraintBottom_toTopOf="@+id/cvProduct_name"
+        app:layout_constraintBottom_toTopOf="@+id/layoutCategoryCol"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toEndOf="@+id/tvCategory"
-        app:layout_constraintTop_toBottomOf="@+id/searchView"
-        app:layout_constraintVertical_bias="0.354" />
-
-    <Button
-        android:id="@+id/actBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="Back"
-        android:text="@string/app_name"
-        app:layout_constraintBottom_toTopOf="@+id/cvProduct_name"
-        app:layout_constraintEnd_toStartOf="@+id/tvCategory"
-        app:layout_constraintHorizontal_bias="0.551"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView"
-        app:layout_constraintVertical_bias="0.354" />
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

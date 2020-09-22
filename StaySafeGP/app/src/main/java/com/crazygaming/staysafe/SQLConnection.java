@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.mysql.jdbc.Connection;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -17,121 +18,165 @@ import java.sql.Statement;
 
 public class SQLConnection
 {
-    SQLBActivity activity;
-    Task tsk;
+    SQLBActivity activity; // Declares the SQLBActivity to be used in the class
 
-    ResultSet resultSet;
-    ResultSetMetaData rsMetaData;
+    ResultSet resultSet; // Declares the ResultSet to be used in the class and outside of class
+    ResultSetMetaData rsMetaData; //Declares the ResultSetMetaData to be used in the class and outside of class
 
-    protected String server = "staysafe-23.mysql.database.azure.com";
-    protected String prt = "3306";
-    protected String db = "staysafe";
-    protected String username = "owner@staysafe-23";
-    protected String pwd = "s5hhYSr@LRyD";
+    protected String server = "staysafe-23.mysql.database.azure.com"; // server name
+    protected String prt = "3306"; // server port
+    protected String db = "staysafe"; // database name
+    protected String username = "owner@staysafe-23"; // server username
+    protected String pwd = "s5hhYSr@LRyD"; // server password
 
-    protected String query;
-    protected String action;
-    protected String records = "";
-    protected String errors = "";
+    protected String[] resultSetArray; // resultSetArray to store the data
 
-    protected String[] userInfo;
+    protected String query; // Query to send a command to Task
+    protected String action; // Action to send any actions to enable dynamic queries.
+    protected String records = ""; //Stores records
+    protected String errors = ""; //Stores errors
 
+    protected String[] userInfo; // User Information
 
     public SQLConnection(SQLBActivity argSQLBActivity, String argQuery, String argAction, String argExtraData[])
     {
-        activity = argSQLBActivity;
+        activity = argSQLBActivity; // Sets activity to argSQLBActivity
 
-        action = argAction;
-        query = argQuery;
-        userInfo = argExtraData;
+        action = argAction; // Sets action to argAction
+        query = argQuery; //Sets query to argQuery
+        userInfo = argExtraData; //Sets userInfo to argExtraData
 
-        tsk = new Task(this);
+        new Task(this); // Starts up the Task constructor
+        //Will be used to communicate directly to the MYSQL Server.
     }
 
+    //Executed after Task is finished.
     protected void SQLFinalised()
     {
-        if(action == "") QueryAction();
-        if(action == "Login") QueryLogin();
+        if(action == "") QueryAction(); // if action is empty string, call QueryAction.
+        if(action == "qRows") QuerySave(); // if action is qRows, call QuerySave.
+        if(action == "Login") QueryLogin(); // if action is login, call QueryLogin.
     }
 
     protected void QueryAction()
     {
         try {
-            while (resultSet.next())
+            while (resultSet.next()) // loop through each row
             {
+                //loops through the columns
                 for (int i = 1; i <= rsMetaData.getColumnCount(); i++)
-                    records += resultSet.getString(i) + "  ";
+                    records += resultSet.getString(i) + "  "; //records each column
 
-                records += "\n";
+                records += "\n"; // records each new line for next row :D
             }
-
         } catch (Exception e) { errors = e.toString(); }
 
-        activity.results.setText(records);
-        activity.error.setText(errors);
+        activity.results.setText(records); // sets Activity's results to records
+        activity.error.setText(errors); // sets Activity's errors to records
+    }
+
+    protected void QuerySave()
+    {
+        //Set size of resultSetArray
+        resultSetArray = new String[RowCount()];
+
+        try {
+            //Set i to 0
+            int i = 0;
+            while (resultSet.next()) // loop through each row
+            {
+                //set resultSetArray to column 1 of each row
+                resultSetArray[i] = resultSet.getString(1);
+                i++; // Add i
+            }
+        } catch (Exception e) { errors = e.toString(); }
+
+        activity.SaveRecords(resultSetArray); // Call SaveRecords function bring over resultSetArray.
     }
 
     protected void QueryLogin()
     {
         try {
-            while(resultSet.next())
+            while(resultSet.next()) // loop through each row
             {
+                //If col2 (username) is equal to array[0] (username)
                 if(resultSet.getString(2).equals(userInfo[0]))
                 {
-
+                    //Uses BCrypt to compare passwords
                     if(BCrypt.checkpw(userInfo[1], resultSet.getString(3)))
                     {
-                        errors = "Logged in";
-                        activity.CloseForm();
+                        errors = "Logged in"; // Error will say logged in
+                        activity.CloseForm(resultSet.getString(9)); // Passes through role
                     }
 
+                    //Set password does not exist if username is right
                     else errors = "Password does not exist.";
 
                     break;
                 }
+                //Set Errors to Username does not exist if username is wrong
                 else errors = "Username does not exist.";
             }
         } catch (Exception e) { errors = e.toString(); }
 
+        //Set Activity's Error text to the errors variable.
         activity.error.setText(errors);
+    }
+
+    protected int RowCount()
+    {
+        // Declare and initialises row size
+        int rowSize = 0;
+
+        try {
+            resultSet.last(); //Sets resultSet's cursor to last
+            rowSize = resultSet.getRow(); // Get's the current row of resultSet's cursor
+            resultSet.beforeFirst(); // Sets resultSet's cursor to first row.
+        } catch (Exception e) { errors = e.toString(); }
+
+        return rowSize; // returns rowSize
     }
 }
 
+// Extends Task to ASyncTask (Gives the class more tools.)
 class Task extends AsyncTask<Void, Void, Void>
 {
-    SQLConnection sql;
+    SQLConnection sql; // Declares SQLConnection as sql.
 
     public Task(SQLConnection argSql)
     {
-        execute();
-        sql = argSql;
+        execute(); // Calls the execute command which will make the connection etc...
+        sql = argSql; // Sets sql to argSQL.
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver"); //Gets the JDBC Driver
+            //Sets con to the DriverManager's getConnection function. This will connect the following
+            //Argument
             Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://" + sql.server + ":" + sql.prt + "/" + sql.db + "?useSSL=true&requireSSL=false", sql.username, sql.pwd);
+            //Creates the statement by calling con's createStatement function.
             Statement statement = con.createStatement();
 
-            if(sql.action == "" || sql.action == "Login")
+            //If the action is applicable
+            if(sql.action == "" || sql.action == "qRows" || sql.action == "Login")
             {
-                sql.resultSet = statement.executeQuery(sql.query);
-                sql.rsMetaData = sql.resultSet.getMetaData();
+                sql.resultSet = statement.executeQuery(sql.query); // execute query and store the query in sql's resultSet variable
+                sql.rsMetaData = sql.resultSet.getMetaData(); // get meta data storing to sql's rsMetaData variable.
             }
-            else statement.execute(sql.query);
+            else statement.execute(sql.query); // this is used to execute CREATE or INSERT INTO etc.
 
 
-        } catch (Exception e) {
-            sql.errors = e.toString();
-        }
-        return null;
+        } catch (Exception e) { sql.errors = e.toString(); }
+
+        return null; // return null
     }
 
     @Override
     protected void onPostExecute(Void aVoid)
     {
-        if(sql.errors != "") sql.activity.error.setText(sql.errors);
-        else sql.SQLFinalised();
+        if(sql.errors != "") sql.activity.error.setText(sql.errors); // set activity's error text to sql.errors if an error has occurred
+        else sql.SQLFinalised(); // call sql's SQLFinalised if task is finished and no errors
     }
 }
