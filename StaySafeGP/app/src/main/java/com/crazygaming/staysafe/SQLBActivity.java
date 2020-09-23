@@ -11,15 +11,20 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+//Imports AppCompatActivity
 public class SQLBActivity extends AppCompatActivity
 {
-    protected TextView error, results;
+    //Common Variables
+    //Set to null safety checks
+    protected TextView error = null, results = null;
     protected EditText etUsername, etPassword;
     protected Button login;
     protected String[] userInfo;
 
-    protected void SaveRecords(String[] resultSet) { }
+    //SaveRecords will allow record saving
+    protected void SaveRecords(String[] resultColArray, String[][] resultColsArray) { }
 
+    //CloseForm will be overridden to close forms by an external class.
     protected void CloseForm(String action) { }
 }
 

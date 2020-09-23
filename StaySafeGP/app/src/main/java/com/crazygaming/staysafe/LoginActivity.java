@@ -56,7 +56,7 @@ public class LoginActivity extends SQLBActivity
         Intent intentActivity;
 
         if (action.equals("Student"))
-             intentActivity = new Intent(this, ConsumerOrderActivity.class);
+            intentActivity = new Intent(this, ConsumerOrderActivity.class);
 
         else intentActivity = null;
 

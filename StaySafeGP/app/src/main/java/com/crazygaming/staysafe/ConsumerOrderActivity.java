@@ -17,10 +17,15 @@ public class ConsumerOrderActivity extends SQLBActivity
     TypedArray categoryImages; // TypedArray declaration
     SQLConnection sqlConnection; // SQLConnection declaration
 
+    protected TextView tvCategory; // TextView tvCategory
+
     protected String[] unique; // String Array declaration
     protected String action; // String declaration
 
     protected Button signOut, basket; // Button declaration
+    protected String[] names, allergies; // Store Names and Allergies
+    protected float[] prices; // Store Prices
+    protected int[] calories; // Store Calories
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,34 +48,80 @@ public class ConsumerOrderActivity extends SQLBActivity
     }
 
     @Override
-    protected void SaveRecords(String[] resultSet)
+    protected void SaveRecords(String[] resultColArray, String[][] resultColsArray)
     {
-        super.SaveRecords(resultSet);
+        super.SaveRecords(resultColArray, resultColsArray); // References the virtual function stored in
+        //SQLBActivity (SQL Base Activity)
 
-        Arrays.sort(resultSet); // sorts resultSet
-        unique = new HashSet<String>(Arrays.asList(resultSet)).toArray(new String[0]); // Finds unique items
+        if(action == "Category")
+        {
+            Arrays.sort(resultColArray); // sorts resultColArray
+            unique = new HashSet<String>(Arrays.asList(resultColArray)).toArray(new String[0]); // Finds unique items
+        }
 
+        if(action == "Products")
+        {
+            names = new String[resultColsArray[0].length];
+            prices = new float[resultColsArray[0].length];
+            calories = new int[resultColsArray[0].length];
+            allergies = new String[resultColsArray[0].length];
+
+            //col
+            for(int i = 0; i < resultColsArray.length; i++)
+                for(int j = 0; j < resultColsArray[0].length; j++) //row
+                {
+                    if(i == 0) names[j] = resultColsArray[i][j]; // store names
+                    if(i == 1) prices[j] = Float.parseFloat(resultColsArray[i][j]); // store prices as an float
+                    if(i == 2) calories[j] = Integer.parseInt(resultColsArray[i][j]); // store calories as an integer
+                    if(i == 3) allergies[j] = resultColsArray[i][j]; // store allergies
+                }
+
+            for(int i = 0; i < resultColsArray[0].length; i ++)
+            {
+                System.out.println("Names: " + names[i]);
+                System.out.println("Price: " + prices[i]);
+                System.out.println("KCal: " + calories[i]);
+                System.out.println("Allergies: " + allergies[i]);
+            }
+        }
+
+        //Calls CreateLayout
         CreateLayout();
     }
 
     protected void AvailableCategories()
     {
+        //Set action to Category (Will be used in CreateLayout function
         action = "Category";
 
         //SQL QUERY (SELECT category FROM products)
         sqlConnection = new SQLConnection(this, "SELECT category FROM products", "qRows", null);
     }
 
+    protected void AvailableProducts()
+    {
+        //Set action to Category (Will be used in CreateLayout function
+        action = "Products";
+
+        //Search Query
+        String querySearch = "WHERE category = '" + tvCategory.getText().toString() + "'";
+
+        //SQL QUERY (SELECT category FROM products + querySearch)
+        sqlConnection = new SQLConnection(this, "SELECT name, price, calories, allergies FROM products " + querySearch, "", null);
+    }
+
+    //UI DEVELOPMENT HERE
     protected void CreateLayout()
     {
-        if(action == "Category") {
+        //Draws activity_con_order_category.xml
+        if(action == "Category")
+        {
             //COLUMN Layout
             LinearLayout layoutCategoryCol = findViewById(R.id.layoutCategoryCol);
 
             //Sets lpStandard to Width = "Match_Parent" and
             // Height = "Wrap_Content"
             LinearLayout.LayoutParams lpStandard = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 500);
-
             lpStandard.weight = 0f; // Set's lpStandard's weight to 1.00 float
 
             //Set lpButton to Width = 100 and
@@ -102,7 +153,7 @@ public class ConsumerOrderActivity extends SQLBActivity
                 buttons[i] = new Button(this);
                 //Sets the layout params to lpButton
                 buttons[i].setLayoutParams(lpButton);
-                buttons[i].setText(unique[i]);
+                buttons[i].setText(unique[i]); // set text to unique by index
 
                 final int finalButtonI = i; // i is not declared in the nested object
                 //If image is called, call LoadConsumerOrderContent
@@ -123,21 +174,33 @@ public class ConsumerOrderActivity extends SQLBActivity
                         @Override
                         public void onClick(View v) { LoadConsumerOrderContent(v, unique[finalImgI]); } });
 
+                    //Add current imgs to current layoutCategoryRow
                     layoutCategoryRow[i].addView(imgs[i]);
                 }
+
+                //Add current buttons to current layoutCategoryRow
                 layoutCategoryRow[i].addView(buttons[i]);
+
+                //Add current layoutCurrentRow to layoutCategoryCol
                 layoutCategoryCol.addView(layoutCategoryRow[i]);
             }
+        }
+
+        //Draws activity_consumer_order.xml
+        if(action == "Products")
+        {
+            //Column View (Found Under svProducts)
+            LinearLayout liProducts = findViewById(R.id.liProducts);
+
         }
     }
 
     /* BUTTON FUNCTIONS */
     protected void LoadConsumerOrderContent(View view, String process)
     {
-        System.out.println(process);
         setContentView(R.layout.activity_consumer_order);
 
-        TextView tvCategory = findViewById(R.id.tvCategory);
+        tvCategory = findViewById(R.id.tvCategory);
         tvCategory.setText(process);
 
         signOut = findViewById(R.id.actBack); //Button to go back (reusing signOut variable.)
@@ -145,18 +208,20 @@ public class ConsumerOrderActivity extends SQLBActivity
 
         basket = findViewById(R.id.actBasket); // Button to go to basket on Basket
         basket.setText("Basket"); //Set basket's text to Basket
+
+        AvailableProducts(); // Queries for available products
     }
 
     public void SignOut(View view)
     {
-        Intent consumerOrder = new Intent(this, LoginActivity.class);
-        finish();
-        startActivity(consumerOrder);
+        Intent consumerOrder = new Intent(this, LoginActivity.class); // Create new intent
+        finish(); // finish this activity
+        startActivity(consumerOrder); // Load consumerOrder intent // (Opens LoginActivity)
     }
  
     public void Back(View view)
     {
-        finish();
-        startActivity(getIntent());
+        finish(); // finish this activity
+        startActivity(getIntent()); // Reload this activity (Opens main content view)
     }
 }

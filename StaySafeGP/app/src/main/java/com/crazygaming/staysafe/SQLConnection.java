@@ -1,14 +1,10 @@
 package com.crazygaming.staysafe;
-import com.crazygaming.staysafe.SQLBActivity;
 
-import android.app.Activity;
 import android.os.AsyncTask;
-import android.widget.TextView;
 
 import com.mysql.jdbc.Connection;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -29,7 +25,8 @@ public class SQLConnection
     protected String username = "owner@staysafe-23"; // server username
     protected String pwd = "s5hhYSr@LRyD"; // server password
 
-    protected String[] resultSetArray; // resultSetArray to store the data
+    protected String[] resultColArray; // resultSetArray to store the data
+    protected String[][] resultColsArray;
 
     protected String query; // Query to send a command to Task
     protected String action; // Action to send any actions to enable dynamic queries.
@@ -61,24 +58,36 @@ public class SQLConnection
     protected void QueryAction()
     {
         try {
+            resultColsArray = new String[rsMetaData.getColumnCount()][RowCount()];
+
+            int i = 0;
             while (resultSet.next()) // loop through each row
             {
-                //loops through the columns
-                for (int i = 1; i <= rsMetaData.getColumnCount(); i++)
-                    records += resultSet.getString(i) + "  "; //records each column
+                //loops through the columns (Columns start from Index 1.)
+                for (int j = 1; j <= rsMetaData.getColumnCount(); j++)
+                {
+                    records += resultSet.getString(j) + "  "; //records each column
+                    // j-1 = col, i = row
+                    resultColsArray[j-1][i] = resultSet.getString(j); //records each column
+                }
 
                 records += "\n"; // records each new line for next row :D
+
+                i++; // adds row to resultColArray
             }
         } catch (Exception e) { errors = e.toString(); }
 
-        activity.results.setText(records); // sets Activity's results to records
-        activity.error.setText(errors); // sets Activity's errors to records
+        //Safety Check
+        if(activity.results != null) activity.results.setText(records); // sets Activity's results to records
+        if(activity.error != null) activity.error.setText(errors); // sets Activity's errors to records
+
+        activity.SaveRecords(null, resultColsArray); // call activity's save records
     }
 
     protected void QuerySave()
     {
         //Set size of resultSetArray
-        resultSetArray = new String[RowCount()];
+        resultColArray = new String[RowCount()];
 
         try {
             //Set i to 0
@@ -86,12 +95,13 @@ public class SQLConnection
             while (resultSet.next()) // loop through each row
             {
                 //set resultSetArray to column 1 of each row
-                resultSetArray[i] = resultSet.getString(1);
-                i++; // Add i
+                resultColArray[i] = resultSet.getString(1);
+
+                i++;
             }
         } catch (Exception e) { errors = e.toString(); }
 
-        activity.SaveRecords(resultSetArray); // Call SaveRecords function bring over resultSetArray.
+        activity.SaveRecords(resultColArray, null); // Call SaveRecords function bring over resultSetArray.
     }
 
     protected void QueryLogin()
