@@ -2,6 +2,6 @@
 
 ## Authors:
 * Edward Patch
-* Steven Moore
-* RBVORTEX (forgot his name :D)
+* Steven Moore (Maybe)
+* Joseph Ross
  
