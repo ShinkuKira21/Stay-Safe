@@ -1,0 +1,32 @@
+/* Author: Edward Patch */
+
+Main Tasks:
+TODO MT - Create LoginActivity (Done)
+TODO MT - Create CategoryActivity (Done)
+TODO MT - Create ProductsActivity (Done)
+TODO MT - Create BasketActivity (Not Started)
+TODO MT - Create StaffOrderActivity (Started)
+TODO MT - Create StaffControlActivity (Not Started)
+
+UI Tasks:
+TODO UIT - Implement Design Logic (Done)
+TODO UIT - Redesign Login Activity (via XML) (Not Started)
+TODO UIT - Redesign Category Activity (via Java) (Not Started)
+TODO UIT - Redesign Products Activity (via Java) (Not Started)
+TODO UIT - Redesign Basket Activity (via Java) (Not Started)
+TODO UIT - Redesign Staff Orders Activity (via Java)
+TODO UIT - Redesign Staff Control Activity (via Java) (Not Started)
+TODO UIT - Image logic needs reworking. (Not Started)
+TODO UIT - Images will be stored on server (Not Started)
+
+
+Secondary Tasks:
+
+TODO ST - Create SQL Connection (Done)
+TODO ST - Add Student/Staff Login Logic (Done)
+TODO ST - Encrypt Password and Check Password (Used BCrypt) (Done)
+TODO ST - Categories need to display on CategoryActivity (Done)
+TODO ST - SQL to check for products that has a certain category (Done)
+TODO ST - Products need to display on ProductsActivity (Done)
+TODO ST - Basket (Create SQL to gather 1 product) (Not Started)
+TODO ST - Basket (C++ will track changes) (Not Started)
