@@ -1,0 +1,2 @@
+jupyter-notebook
+system("PAUSE")
