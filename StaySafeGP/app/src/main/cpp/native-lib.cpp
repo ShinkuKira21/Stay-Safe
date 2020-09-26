@@ -7,18 +7,21 @@
  * */
 
 extern "C"
-JNIEXPORT void JNICALL
-Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject thiz,
-                                                         jstring cls)
+JNIEXPORT jstring JNICALL
+Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject thiz, jstring action,
+                                                         jobjectArray result_cols_array)
 {
-    Functions functions;
+    Functions* functions = new Functions();
 
-    std::string selection = functions.JStringConverter(env, cls) + " ";
+    std::string selection = functions->JStringConverter(env, action);
+    std::string** SQLQuery = functions->JObjectArrayConverter(env, result_cols_array);
 
 
     //If
-    if(selection == "Basket")
+    if(selection == "ATB")
     {
-
+        return env->NewStringUTF(("Done " + SQLQuery[0][1]).c_str());
     }
+
+    return env->NewStringUTF("");
 }

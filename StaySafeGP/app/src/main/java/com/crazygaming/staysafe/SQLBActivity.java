@@ -38,6 +38,7 @@ public class SQLBActivity extends AppCompatActivity
         startActivity(consumerOrder); // Load consumerOrder intent // (Opens LoginActivity)
     }
 
-    protected native void ClassSelector(String action);
+    // Declares C++ ClassSelector Function (JNI)
+    protected native String ClassSelector(String action, String[][] resultColsArray);
 }
 
