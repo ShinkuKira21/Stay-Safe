@@ -400,6 +400,11 @@ public class ConsumerOrderActivity extends SQLBActivity
         AvailableProducts(); // Queries for available products
     }
 
+    public void Basket(View view)
+    {
+        Intent
+    }
+
     public void SignOut(View view)
     {
         Intent consumerOrder = new Intent(this, LoginActivity.class); // Create new intent
