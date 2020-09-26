@@ -1,8 +1,11 @@
+/*
+    Author: Edward Patch
+ */
+
+
 package com.crazygaming.staysafe;
 
-import android.content.Intent;
 import android.content.res.TypedArray;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -10,10 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Space;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -82,9 +82,8 @@ public class ConsumerOrderActivity extends SQLBActivity
                     if(i == 1) prices[j] = Float.parseFloat(resultColsArray[i][j]); // store prices as an float
                     if(i == 2) calories[j] = Integer.parseInt(resultColsArray[i][j]); // store calories as an integer
                     if(i == 3) allergies[j] = resultColsArray[i][j]; // store allergies
-                    if(i == 4) images[j] = resultColsArray[i][j];
+                    if(i == 4) images[j] = resultColsArray[i][j]; // store images
                 }
-
         }
 
         //Calls CreateLayout
@@ -400,18 +399,25 @@ public class ConsumerOrderActivity extends SQLBActivity
         AvailableProducts(); // Queries for available products
     }
 
-    public void Basket(View view)
+    public void AddToBasket(View view)
     {
-        Intent
+        //Search Query
+        String querySearch = "WHERE name = '";
     }
 
+    // Open Basket Activity
+    public void Basket(View view)
+    {
+        CloseForm("", this, ConsumerBasketActivity.class); // Uses CloseForm to open ConsumerBasket
+    }
+
+    // Sign Out
     public void SignOut(View view)
     {
-        Intent consumerOrder = new Intent(this, LoginActivity.class); // Create new intent
-        finish(); // finish this activity
-        startActivity(consumerOrder); // Load consumerOrder intent // (Opens LoginActivity)
+        CloseForm("", this, LoginActivity.class); // Uses CloseForm to open LoginActivity
     }
- 
+
+    //Back
     public void Back(View view)
     {
         finish(); // finish this activity

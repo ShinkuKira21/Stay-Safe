@@ -13,7 +13,7 @@ Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject th
 {
     Functions functions;
 
-    std::string selection = functions.JStringConverter(env, cls) + " " + ;
+    std::string selection = functions.JStringConverter(env, cls) + " ";
 
 
     //If
