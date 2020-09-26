@@ -14,6 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 //Imports AppCompatActivity
 public class SQLBActivity extends AppCompatActivity
 {
+    static
+    {
+        System.loadLibrary("native-lib");
+    }
+
     //Common Variables
     //Set to null safety checks
     protected TextView error = null, results = null;
@@ -26,5 +31,7 @@ public class SQLBActivity extends AppCompatActivity
 
     //CloseForm will be overridden to close forms by an external class.
     protected void CloseForm(String action) { }
+
+    protected native void ClassSelector(String action);
 }
 

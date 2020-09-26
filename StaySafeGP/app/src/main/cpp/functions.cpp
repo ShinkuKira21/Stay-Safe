@@ -17,8 +17,7 @@ class Functions
         const char* cchar;
         std::string converter;
 
-    private:
-
+    public:
         /*
          * The following C++ function will convert
          * Java String to C++ Standard String
