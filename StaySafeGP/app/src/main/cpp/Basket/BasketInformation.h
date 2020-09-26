@@ -5,16 +5,23 @@
 class CBInformation
 {
     protected:
+        //rowSize  columnSize
+        int rSize, cSize;
+
         //Products - [Product Name][ProductCols]
-        std::string** products = nullptr;
-        static std::string** staticProducts;
+        std::string** tmpProducts = nullptr;
+        static std::string** products;
 
     public:
-        //SetCBInformation Declaration
-        // Arguments (2D Pointer String, data), (String, action, Default: "standard")
-        static void SetCBInformation(std::string** data, std::string action = "standard");
+        CBInformation(std::string** data, std::string action);
+        ~CBInformation();
+
+        //GetCBInformation Declaration
+        // Arguments (String, action, Default: "standard")
+        static std::string** GetCBInformation(std::string action = "standard");
 
     private:
         void AllocatePointers();
         void DeallocatePointers();
+        void SizeOfPointers(std::string** data);
 };

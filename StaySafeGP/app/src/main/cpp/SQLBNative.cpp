@@ -1,9 +1,12 @@
-#include "functions.cpp"
+#include "Basket/Basket.h"
 
 /* C++ Author: Edward Patch
  * This Library will contain offline tasks. This is to improve performance.
  * The C++ library can be accessed from it's based class.
  * */
+
+std::string** CBInformation::products;
+
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject thiz, jstring action,

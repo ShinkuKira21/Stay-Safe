@@ -1,43 +1,60 @@
 #include "BasketInformation.h"
 
-void CBInformation::SetCBInformation(std::string** data, std::string action)
+CBInformation::CBInformation(std::string** data, std::string action)
 {
-    if(action == "standard")
-    {
-        //Rows
-        for(int i = 0; i < sizeof(data) / sizeof(data[0]); i++)
-        {
-            //Cols
-            for (int j = 0; j < sizeof(data[0]) / sizeof(int); i++)
-            {
+    SizeOfPointers(data);
+    AllocatePointers();
 
+    for(int i = 0; i <= rSize; i++)
+    {
+        for(int j = 0; j <= cSize; j++)
+        {
+            // add products to tmpProducts
+            if(i + 1 < rSize && j + 1 < cSize)
+                tmpProducts[j][i] = products[j][i];
+
+            // add data to tmpProducts
+            // set tmpProducts to products
+            else
+            {
+                tmpProducts[j][i] = data[j][i];
+                products[j][i] = tmpProducts[j][i];
             }
         }
     }
 }
 
+CBInformation::~CBInformation()
+{
+    DeallocatePointers();
+}
+
+std::string** CBInformation::GetCBInformation(std::string action)
+{
+    if(action == "standard")
+    {
+        return products;
+    }
+
+    return nullptr;
+}
+
 void CBInformation::AllocatePointers()
 {
     //Declares and initialises the following variables
-    int rowSize = 0;
-    int colSize = 0;
+    int rowSize = sizeof(products) / sizeof(products[0]);
+    int colSize = sizeof(products[0]) / sizeof(int);
 
-    //If staticProducts is not equal to nullptr
+    //If rowSize is not equal to 0 and colSize is not equal to 0
     //Retrieve sizes
-    if (staticProducts != nullptr)
-    {
-        rowSize = sizeof(staticProducts) / sizeof(staticProducts[0]);
-        colSize = sizeof(staticProducts[0]) / sizeof(int);
-
-        rowSize += 1;
-        colSize += 1;
-    }
+    if (rowSize != 0 && colSize != 0)
+        rowSize += 1; colSize += 1; // add 1 to each variable
 
     //Allocate Products Pointer
-    products = new std::string*[colSize];
+    tmpProducts = new std::string*[colSize];
 
     for(int i = 0; i < rowSize; i++)
-        products[i] = new std::string[rowSize];
+        tmpProducts[i] = new std::string[rowSize];
 }
 
 void CBInformation::DeallocatePointers()
@@ -45,13 +62,19 @@ void CBInformation::DeallocatePointers()
     int rowSize = 0;
 
     //Safety Check
-    if(products != nullptr)
+    if(tmpProducts != nullptr)
     {
-        rowSize = sizeof(products) / sizeof(products[0]);
+        rowSize = sizeof(tmpProducts) / sizeof(tmpProducts[0]);
 
         //Cleans pointers
-        delete[] products;
+        delete[] tmpProducts;
         for(int i = 0; i < rowSize; i++)
-            delete[] products[i];
+            delete[] tmpProducts[i];
     }
+}
+
+void CBInformation::SizeOfPointers(std::string** data)
+{
+    rSize = sizeof(data) / sizeof(data[0]);
+    cSize = sizeof(data[0]) / sizeof(int);
 }
