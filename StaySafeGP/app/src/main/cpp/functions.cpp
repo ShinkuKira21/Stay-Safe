@@ -52,14 +52,14 @@ class Functions
 
         std::string** JObjectArrayConverter(JNIEnv *env, jobjectArray jStrArray)
         {
-            // Gets the Rows :D
+            // Gets the Rows
             int jRows = env->GetArrayLength(jStrArray);
-            // Gets the first row so we can check the columns inside the row :D
+            // Gets the first row so we can check the columns inside the row
             jobjectArray rowSelection = (jobjectArray) env->GetObjectArrayElement(jStrArray, 0);
-            // Gets the columns from the first row (rowSelection) :D
+            // Gets the columns from the first row (rowSelection)
             int jCol = env->GetArrayLength(rowSelection);
 
-            //Initialises Rows
+            //Initialises Cols
             conversion = new std::string*[jCol];
 
             // Used the following link as I was a bit unsure of JNI built in functions
@@ -69,7 +69,7 @@ class Functions
             //Rows
             for(int i = 0; i < jRows; i++)
             {
-                //Initialises Cols
+                //Initialises Rows
                 conversion[i] = new std::string[jRows];
 
                 //First row

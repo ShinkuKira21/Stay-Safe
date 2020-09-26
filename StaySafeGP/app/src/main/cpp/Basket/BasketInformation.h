@@ -5,21 +5,16 @@
 class CBInformation
 {
     protected:
-        //Strings
-        //Name, Category, Allergies, Availability, img
-        static std::string name, category,
-        allergies, availability, img;
-
-        //Integers
-        //Calories
-        static int calories;
-
-        //Doubles
-        //Price
-        static double price;
+        //Products - [Product Name][ProductCols]
+        std::string** products = nullptr;
+        static std::string** staticProducts;
 
     public:
-        //SetCBInformation Declaration (Yesss, I love the word \
-        action :D)
-        static void SetCBInformation(std::string action);
+        //SetCBInformation Declaration
+        // Arguments (2D Pointer String, data), (String, action, Default: "standard")
+        static void SetCBInformation(std::string** data, std::string action = "standard");
+
+    private:
+        void AllocatePointers();
+        void DeallocatePointers();
 };

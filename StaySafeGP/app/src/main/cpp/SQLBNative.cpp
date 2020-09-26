@@ -17,7 +17,6 @@ Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject th
     //Converts javaobjectarray (result
     std::string** SQLQuery = functions->JObjectArrayConverter(env, resultColsArray);
 
-
     //If selection is equal to ATB
     if(selection == "ATB")
     {
