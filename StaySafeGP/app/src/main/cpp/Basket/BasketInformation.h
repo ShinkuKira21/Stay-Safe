@@ -19,6 +19,7 @@ class CBInformation
         static double price;
 
     public:
-        //SetCBInformation Declaration
-        static void SetCBInformation();
+        //SetCBInformation Declaration (Yesss, I love the word \
+        action :D)
+        static void SetCBInformation(std::string action);
 };
