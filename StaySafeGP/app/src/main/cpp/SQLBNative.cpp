@@ -5,9 +5,8 @@
  * This Library will contain offline tasks. This is to improve performance.
  * The C++ library can be accessed from it's based class.
  * */
-
 extern "C"
-JNIEXPORT jstring JNICALL
+JNIEXPORT void JNICALL
 Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject thiz, jstring action,
                                                          jobjectArray result_cols_array)
 {
@@ -20,8 +19,6 @@ Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject th
     //If
     if(selection == "ATB")
     {
-        return env->NewStringUTF(("Done " + SQLQuery[0][1]).c_str());
-    }
 
-    return env->NewStringUTF("");
+    }
 }

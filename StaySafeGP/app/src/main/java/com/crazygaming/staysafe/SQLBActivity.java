@@ -39,6 +39,6 @@ public class SQLBActivity extends AppCompatActivity
     }
 
     // Declares C++ ClassSelector Function (JNI)
-    protected native String ClassSelector(String action, String[][] resultColsArray);
+    protected native void ClassSelector(String action, String[][] resultColsArray);
 }
 

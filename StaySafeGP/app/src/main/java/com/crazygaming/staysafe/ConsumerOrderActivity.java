@@ -93,7 +93,8 @@ public class ConsumerOrderActivity extends SQLBActivity
 
             atb.setText("Added");
 
-            System.out.println(ClassSelector(action, resultColsArray));
+            ClassSelector(action, resultColsArray);
+            System.out.println("");
 
             return; //No need to create layout again
         }

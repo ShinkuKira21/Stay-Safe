@@ -21,7 +21,13 @@ class Functions
         Functions() { }
         ~Functions()
         {
-            delete[] (conversion, cchar);
+            //Cleans cchar from Memory
+            delete cchar;
+
+            //Cleans conversion from Memory
+            delete[] conversion;
+            for (int i = 0; i < sizeof(conversion)/sizeof(conversion[0]); i++)
+                delete[] conversion[i];
         }
 
         /*
