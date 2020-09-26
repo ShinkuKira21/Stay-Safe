@@ -5,6 +5,7 @@
 
 package com.crazygaming.staysafe;
 
+import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,8 +31,14 @@ public class SQLBActivity extends AppCompatActivity
     protected void SaveRecords(String[] resultColArray, String[][] resultColsArray) { }
 
     //CloseForm will be overridden to close forms by an external class.
-    protected void CloseForm(String action) { }
+    protected void CloseForm(String action, SQLBActivity thiz, Class<?> openActivity)
+    {
+        Intent consumerOrder = new Intent(thiz, openActivity); // Create new intent
+        finish(); // finish this activity
+        startActivity(consumerOrder); // Load consumerOrder intent // (Opens LoginActivity)
+    }
 
-    protected native void ClassSelector(String action);
+    // Declares C++ ClassSelector Function (JNI)
+    protected native void ClassSelector(String action, String[][] resultColsArray);
 }
 

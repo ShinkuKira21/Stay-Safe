@@ -1,8 +1,11 @@
+/*
+    Author: Edward Patch
+ */
+
+
 package com.crazygaming.staysafe;
 
-import android.content.Intent;
 import android.content.res.TypedArray;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -10,10 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Space;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,7 +28,7 @@ public class ConsumerOrderActivity extends SQLBActivity
     protected String[] unique; // String Array declaration
     protected String action; // String declaration
 
-    protected Button signOut, basket; // Button declaration
+    protected Button signOut, basket, atb; // Button declaration
     protected String[] names, allergies, images; // Store Names, Allergies, Images
     protected float[] prices; // Store Prices
     protected int[] calories; // Store Calories
@@ -82,9 +82,28 @@ public class ConsumerOrderActivity extends SQLBActivity
                     if(i == 1) prices[j] = Float.parseFloat(resultColsArray[i][j]); // store prices as an float
                     if(i == 2) calories[j] = Integer.parseInt(resultColsArray[i][j]); // store calories as an integer
                     if(i == 3) allergies[j] = resultColsArray[i][j]; // store allergies
-                    if(i == 4) images[j] = resultColsArray[i][j];
+                    if(i == 4) images[j] = resultColsArray[i][j]; // store images
                 }
+        }
 
+        if(action == "ATB" && atb.getText().toString().equals("Adding..."))
+        {
+
+            //ClassSelector(action, resultColsArray); // EXECUTES C++ CODE
+
+            atb.setText("Added");
+
+            ClassSelector(action, resultColsArray);
+            System.out.println("");
+
+            return; //No need to create layout again
+        }
+
+        if (action == "ATB" && atb.getText().toString().equals("Removing..."))
+        {
+            atb.setText("Removed");
+
+            return;
         }
 
         //Calls CreateLayout
@@ -194,10 +213,8 @@ public class ConsumerOrderActivity extends SQLBActivity
         }
 
         //Draws activity_consumer_order.xml
-        if(action == "Products") {
-
-            System.out.println("Here");
-
+        if(action == "Products")
+        {
             /*\\ LAYOUT PARAMS //*/
 
             //STANDARDS
@@ -269,7 +286,7 @@ public class ConsumerOrderActivity extends SQLBActivity
                         Button[] alPurchase = new Button[names.length];
 
                         //Declares and Initialises the alAddToBasket array
-                        Button[] alAddToBasket = new Button[names.length];
+                        final Button[] alAddToBasket = new Button[names.length];
 
                 //Declares and Initialises the liProductInfo array
                 LinearLayout[] prProductInfo = new LinearLayout[names.length];
@@ -317,6 +334,21 @@ public class ConsumerOrderActivity extends SQLBActivity
                             alAddToBasket[i] = new Button(this);
                             alAddToBasket[i].setText("Add To Basket"); // Sets alAddToBasket button text to Add To Basket
                             alAddToBasket[i].setLayoutParams(layoutPActionATB); // Sets LayoutParams to layoutPActionATB
+                            // Wires alAddToBack[i] to AddToBasket function
+                            final int finalBasketI = i; // copies i to finalBasketI for nested function to use
+                            alAddToBasket[i].setOnClickListener(
+                                    new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    atb = alAddToBasket[finalBasketI];
+                                    if(alAddToBasket[finalBasketI].getText().toString().equals("Add To Basket")
+                                    || alAddToBasket[finalBasketI].getText().toString().equals("Removed"))
+                                        alAddToBasket[finalBasketI].setText("Adding...");
+
+                                    else alAddToBasket[finalBasketI].setText("Removing...");
+
+                                    AddToBasket(v, names[finalBasketI]); }
+                            });
 
                     // Creates a new Product Row Info Layout.
                     prProductInfo[i] = new LinearLayout(this);
@@ -400,18 +432,29 @@ public class ConsumerOrderActivity extends SQLBActivity
         AvailableProducts(); // Queries for available products
     }
 
-    public void Basket(View view)
+    public void AddToBasket(View view, String productName)
     {
-        Intent
+        action = "ATB"; //Action: Add to Basket
+        //Search Query - Expectation:
+        //WHERE name = 'Cappuccino (Medio)'
+        String querySearch = "WHERE name = '" + productName + "'";
+
+        sqlConnection = new SQLConnection(this, "SELECT * FROM products " + querySearch, "", null);
     }
 
+    // Open Basket Activity
+    public void Basket(View view)
+    {
+        CloseForm("", this, ConsumerBasketActivity.class); // Uses CloseForm to open ConsumerBasket
+    }
+
+    // Sign Out
     public void SignOut(View view)
     {
-        Intent consumerOrder = new Intent(this, LoginActivity.class); // Create new intent
-        finish(); // finish this activity
-        startActivity(consumerOrder); // Load consumerOrder intent // (Opens LoginActivity)
+        CloseForm("", this, LoginActivity.class); // Uses CloseForm to open LoginActivity
     }
- 
+
+    //Back
     public void Back(View view)
     {
         finish(); // finish this activity

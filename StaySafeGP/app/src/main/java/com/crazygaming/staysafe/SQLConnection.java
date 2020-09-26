@@ -116,7 +116,7 @@ public class SQLConnection
                     if(BCrypt.checkpw(userInfo[1], resultSet.getString(3)))
                     {
                         errors = "Logged in"; // Error will say logged in
-                        activity.CloseForm(resultSet.getString(9)); // Passes through role
+                        activity.CloseForm(resultSet.getString(9), null, null); // Passes through role
                     }
 
                     //Set password does not exist if username is right

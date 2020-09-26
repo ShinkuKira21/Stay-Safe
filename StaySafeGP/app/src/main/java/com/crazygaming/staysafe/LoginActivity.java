@@ -1,13 +1,12 @@
+/*
+    Author: Edward Patch
+ */
+
 package com.crazygaming.staysafe;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 //Extends SQLBActivity class.
@@ -49,10 +48,8 @@ public class LoginActivity extends SQLBActivity
 
     //Overrides SQLBActivity's CloseForm function
     @Override
-    public void CloseForm(String action)
+    public void CloseForm(String action, SQLBActivity thiz, Class<?> openActivity)
     {
-        super.CloseForm(action);
-
         Intent intentActivity;
 
         if (action.equals("Student"))
@@ -60,7 +57,7 @@ public class LoginActivity extends SQLBActivity
 
         else intentActivity = null;
 
-        this.startActivity(intentActivity);
-        this.finish();
+        startActivity(intentActivity);
+        finish();
     }
 }
