@@ -1,4 +1,3 @@
-#include <jni.h>
 #include "functions.cpp"
 
 /* C++ Author: Edward Patch
@@ -8,15 +7,18 @@
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject thiz, jstring action,
-                                                         jobjectArray result_cols_array)
+                                                         jobjectArray resultColsArray)
 {
     Functions* functions = new Functions();
 
+    //Converts jstring (action) to std::string (selection)
     std::string selection = functions->JStringConverter(env, action);
-    std::string** SQLQuery = functions->JObjectArrayConverter(env, result_cols_array);
+
+    //Converts javaobjectarray (result
+    std::string** SQLQuery = functions->JObjectArrayConverter(env, resultColsArray);
 
 
-    //If
+    //If selection is equal to ATB
     if(selection == "ATB")
     {
 
