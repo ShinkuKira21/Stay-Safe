@@ -11,14 +11,14 @@ CBInformation::CBInformation(std::string** data, std::string action)
         {
             // add products to tmpProducts
             if(i + 1 < rSize && j + 1 < cSize)
-                tmpProducts[j][i] = products[j][i];
+                tmpProducts[i][j] = products[i][j];
 
             // add data to tmpProducts
             // set tmpProducts to products
             else
             {
-                tmpProducts[j][i] = data[j][i];
-                products[j][i] = tmpProducts[j][i];
+                tmpProducts[i][j] = data[j][i];
+                products[i][j] = tmpProducts[i][j];
             }
         }
     }
@@ -62,15 +62,12 @@ void CBInformation::DeallocatePointers()
     int rowSize = 0;
 
     //Safety Check
-    if(tmpProducts != nullptr)
-    {
-        rowSize = sizeof(tmpProducts) / sizeof(tmpProducts[0]);
+    rowSize = sizeof(tmpProducts) / sizeof(tmpProducts[0]);
 
-        //Cleans pointers
-        delete[] tmpProducts;
-        for(int i = 0; i < rowSize; i++)
-            delete[] tmpProducts[i];
-    }
+    //Cleans pointers
+    delete[] tmpProducts;
+    for(int i = 0; i < rowSize; i++)
+        delete[] tmpProducts[i];
 }
 
 void CBInformation::SizeOfPointers(std::string** data)

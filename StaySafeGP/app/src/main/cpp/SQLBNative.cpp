@@ -23,6 +23,21 @@ Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject th
     //If selection is equal to ATB
     if(selection == "ATB")
     {
+        CBInformation* basket = new CBInformation(SQLQuery, "Add");
+    }
+}
 
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_crazygaming_staysafe_SQLBActivity_GetData(JNIEnv *env, jobject thiz, jstring action)
+{
+    Functions* functions = new Functions();
+    std::string selection = functions->JStringConverter(env, action);
+
+    std::string** info = CBInformation::GetCBInformation();
+
+    if(selection == "ATB")
+    {
+        return env->NewStringUTF(info[0][1].c_str());
     }
 }
