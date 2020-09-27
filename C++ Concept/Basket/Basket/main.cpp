@@ -1,9 +1,11 @@
-#include "BasketInformation.h"
+#include "BasketInformation.cpp"
+#include <vector>
 
 std::string** CBInformation::products;
 
 int main()
 {
+	std::vector< std::vector<std::string> > test;
 	std::string** hello;
 
 	hello = new std::string*[3];
@@ -15,15 +17,17 @@ int main()
 		for (int j = 0; j < 3; j++)
 			getline(std::cin, hello[i][j]);
 	}
-		
 
-	CBInformation* cb = new CBInformation(hello, "Add");
+	std::cout << "Row: " << sizeof(hello);
+	std::cout << "Col: " << sizeof(hello[0]);
 
-	std::string** test = CBInformation::GetCBInformation();
+	//CBInformation* cb = new CBInformation(hello, "Add");
+
+	/*std::string** test = CBInformation::GetCBInformation();
 
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++)
-			std::cout << test[i][j];
+			std::cout << test[i][j];*/
 
 	delete[] hello;
 

@@ -10,7 +10,7 @@ class CBInformation
         int rSize, cSize;
 
         //Products - [Product Name][ProductCols]
-        std::string** tmpProducts = nullptr;
+        
         static std::string** products;
 
     public:
