@@ -1,38 +1,48 @@
-#include "BasketInformation.cpp"
-#include <vector>
+#include "BasketInformation.h"
 
 std::string** CBInformation::products;
+int CBInformation::productCount;
 
 int main()
 {
-	std::vector< std::vector<std::string> > test;
 	std::string** hello;
+	int size[2] = { 1, 3 };
 
-	hello = new std::string*[3];
 
-	for (int i = 0; i < 3; i++)
+	hello = new std::string*[size[1]];
+
+	for (int i = 0; i < size[1]; i++)
 	{
-		hello[i] = new std::string[3];
+		hello[i] = new std::string[size[0]];
 
-		for (int j = 0; j < 3; j++)
+		for (int j = 0; j < size[0]; j++)
 			getline(std::cin, hello[i][j]);
 	}
 
-	std::cout << "Row: " << sizeof(hello);
-	std::cout << "Col: " << sizeof(hello[0]);
-
-	//CBInformation* cb = new CBInformation(hello, "Add");
-
-	/*std::string** test = CBInformation::GetCBInformation();
-
-	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++)
-			std::cout << test[i][j];*/
+	CBInformation* cb = new CBInformation(hello, size, "Add");
 
 	delete[] hello;
 
-	for (int i = 0; i < 3; i++)
-		delete[] hello[i];
+	hello = new std::string * [size[1]];
+
+	for (int i = 0; i < size[1]; i++)
+	{
+		hello[i] = new std::string[size[0]];
+
+		for (int j = 0; j < size[0]; j++)
+			getline(std::cin, hello[i][j]);
+	}
+
+	cb = new CBInformation(hello, size, "Add");
+
+	std::string** test = CBInformation::GetCBInformation();
+	int newSize[2] = { CBInformation::GetProductRows(), 3 };
+
+	for (int i = 0; i < newSize[0]; i++)
+		for (int j = 0; j < newSize[1]; j++)
+			std::cout << test[j][i];
+
+	delete[] hello;
 
 	return 0;
 }
