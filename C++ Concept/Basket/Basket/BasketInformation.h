@@ -1,10 +1,11 @@
 /* Author: Edward Patch */
 
-#include "../functions.cpp"
+#include <iostream>
+#include <string>
 
 class CBInformation
 {
-  protected:
+    protected:
         //rowSize  columnSize
         int rSize, cSize;
         int rStart = 0, tmpSize;
@@ -14,7 +15,7 @@ class CBInformation
         std::string** tmpProducts;
         static std::string** products; // current products in basket
 
-  public:
+    public:
         CBInformation(std::string** data, int* size, std::string action);
         ~CBInformation();
 
@@ -23,7 +24,7 @@ class CBInformation
         static std::string** GetCBInformation(std::string action = "standard");
         static int GetProductRows() { return productCount; }
 
-  private:
+    private:
         void SetTempProducts();
         void AllocatePointers();
         void DeallocatePointers();

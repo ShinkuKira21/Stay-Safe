@@ -14,6 +14,7 @@
 class Functions
 {
     protected:
+        static int jCols, jRows;
         const char* cchar;
         std::string** conversion;
 
@@ -26,7 +27,7 @@ class Functions
 
             //Cleans conversion from Memory
             delete[] conversion;
-            for (int i = 0; i < sizeof(conversion)/sizeof(conversion[0]); i++)
+            for (int i = 0; i < jCols; i++)
                 delete[] conversion[i];
         }
 
@@ -52,38 +53,40 @@ class Functions
 
         std::string** JObjectArrayConverter(JNIEnv *env, jobjectArray jStrArray)
         {
-            // Gets the Rows :D
-            int jRows = env->GetArrayLength(jStrArray);
-            // Gets the first row so we can check the columns inside the row :D
+            // Gets the Rows
+            jCols = env->GetArrayLength(jStrArray);
+            // Gets the first row so we can check the columns inside the row
             jobjectArray rowSelection = (jobjectArray) env->GetObjectArrayElement(jStrArray, 0);
-            // Gets the columns from the first row (rowSelection) :D
-            int jCol = env->GetArrayLength(rowSelection);
+            // Gets the columns from the first row (rowSelection)
+            jRows = env->GetArrayLength(rowSelection);
 
-            //Initialises Rows
-            conversion = new std::string*[jCol];
+            //Initialises Cols
+            conversion = new std::string*[jCols];
 
             // Used the following link as I was a bit unsure of JNI built in functions
             // Found out (env->GetObjectArrayElement function)
             // https://stackoverflow.com/questions/19591873/get-an-array-of-strings-from-java-to-c-jni
 
             //Rows
-            for(int i = 0; i < jRows; i++)
+            for(int i = 0; i < jCols; i++)
             {
-                //Initialises Cols
+                //Initialises Rows
                 conversion[i] = new std::string[jRows];
 
                 //First row
                 rowSelection = (jobjectArray) env->GetObjectArrayElement(jStrArray, i);
 
                 //Cols
-                for(int j = 0; j < jCol; j++)
+                for(int j = 0; j < jRows; j++)
                 {
                     jstring currentString = (jstring)env->GetObjectArrayElement(rowSelection, j);
-                    conversion[j][i] = env->GetStringUTFChars(currentString, 0);
+                    conversion[i][j] = env->GetStringUTFChars(currentString, 0);
                 }
             }
 
-
             return (std::string **) conversion;
         }
+
+        static int GetDataCol() { return jCols; }
+        static int GetDataRow() { return jRows; }
 };

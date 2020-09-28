@@ -12,10 +12,10 @@ CBInformation::CBInformation(std::string** data, int* size, std::string action)
     {
         for (int j = 0; j < cSize; j++)
             tmpProducts[j][i] = data[j][dIndex];// add products to tmpProducts
-
+           
         dIndex++;
     }
-
+       
     productCount++; // adds another product
     products = tmpProducts; // Sets tmpProducts to products.
 }
