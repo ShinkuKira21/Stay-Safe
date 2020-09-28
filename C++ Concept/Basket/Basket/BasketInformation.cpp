@@ -22,12 +22,12 @@ std::string** CBInformation::GetCBInformation(std::string action)
 void CBInformation::SetTempProducts(std::string** data, std::string action)
 {
     //This will set products to tmpProducts
-    if(action == "Add")
+    if(action == "ATB")
         for (int i = 0; i < productCount; i++)
             for(int j = 0; j < cSize; j++)
                 tmpProducts[j][i] = products[j][i];
 
-    if (action == "Remove")
+    if (action == "RFB")
     {
         //Declares boolean named bRowMatched and set to false
         bool bRowMatched = false;
@@ -57,7 +57,7 @@ void CBInformation::SetTempProducts(std::string** data, std::string action)
 
 void CBInformation::SetProducts(std::string** data, std::string action)
 {
-    if (action == "Add")
+    if (action == "ATB")
     {
         //Adds extra product to the existing products
         int dIndex = 0;
@@ -73,7 +73,7 @@ void CBInformation::SetProducts(std::string** data, std::string action)
         products = tmpProducts; // Sets tmpProducts to products.
     }
 
-    if (action == "Remove")
+    if (action == "RFB")
     {
         //Removes a product from existing products
         productCount--;
@@ -83,7 +83,7 @@ void CBInformation::SetProducts(std::string** data, std::string action)
 
 void CBInformation::AllocatePointers(std::string action)
 {
-    if (action == "Add")
+    if (action == "ATB")
     {
         //Retrieve sizes
         tmpSize = rSize;
@@ -100,7 +100,7 @@ void CBInformation::AllocatePointers(std::string action)
         for (int i = 0; i < cSize; i++)
             tmpProducts[i] = new std::string[tmpSize];
     }
-    if (action == "Remove")
+    if (action == "RFB")
     {
         //Safety Check
         if (productCount != 0)

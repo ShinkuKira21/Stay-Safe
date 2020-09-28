@@ -23,7 +23,7 @@ int main()
 			getline(std::cin, input[i][j]);
 	}
 
-	CBInformation* cb = new CBInformation(input, size, "Add");
+	CBInformation* cb = new CBInformation(input, size, "ATB");
 
 	delete[] input;
 
@@ -37,7 +37,7 @@ int main()
 			getline(std::cin, input[i][j]);
 	}
 
-	cb = new CBInformation(input, size, "Add");
+	cb = new CBInformation(input, size, "ATB");
 
 	delete[] input;
 
@@ -51,7 +51,7 @@ int main()
 			getline(std::cin, input[i][j]);
 	}
 
-	cb = new CBInformation(input, size, "Remove");
+	cb = new CBInformation(input, size, "RFB");
 
 	delete[] input;
 
@@ -66,7 +66,7 @@ int main()
 			getline(std::cin, input[i][j]);
 	}
 
-	cb = new CBInformation(input, size, "Add");
+	cb = new CBInformation(input, size, "ATB");
 
 	delete[] input;
 
