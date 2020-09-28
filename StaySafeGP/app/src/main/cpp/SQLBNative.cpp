@@ -5,7 +5,17 @@
  * The C++ library can be accessed from it's based class.
  * */
 
+/* GLOBAL STATIC VARIABLES */
+
+//FUNCTIONS
+int Functions::jCols;
+int Functions::jRows;
+
+//BASKET
 std::string** CBInformation::products;
+int CBInformation::productCount;
+
+static int dataSize[2];
 
 extern "C"
 JNIEXPORT void JNICALL
@@ -17,13 +27,18 @@ Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject th
     //Converts jstring (action) to std::string (selection)
     std::string selection = functions->JStringConverter(env, action);
 
-    //Converts javaobjectarray (result
+    //Converts javaobjectarray (result)
     std::string** SQLQuery = functions->JObjectArrayConverter(env, resultColsArray);
+
+    int sizeResults[2] = {Functions::GetDataRow(), Functions::GetDataCol()};
+
+    for(int i = 0; i < 2; i++)
+        dataSize[i] = sizeResults[i];
 
     //If selection is equal to ATB
     if(selection == "ATB")
     {
-        CBInformation* basket = new CBInformation(SQLQuery, "Add");
+        CBInformation* basket = new CBInformation(SQLQuery, sizeResults, "Add");
     }
 }
 
@@ -38,6 +53,7 @@ Java_com_crazygaming_staysafe_SQLBActivity_GetData(JNIEnv *env, jobject thiz, js
 
     if(selection == "ATB")
     {
-        return env->NewStringUTF(info[0][1].c_str());
+        //return env->NewStringUTF(("Row: " + std::to_string(dataSize[0]) + " Col: " + std::to_string(dataSize[1])).c_str());
+        return env->NewStringUTF(info[2][0].c_str());
     }
 }
