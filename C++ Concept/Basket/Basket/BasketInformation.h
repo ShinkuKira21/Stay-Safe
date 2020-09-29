@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 class CBInformation
 {
@@ -25,8 +26,9 @@ class CBInformation
         static int GetProductRows() { return productCount; }
 
     private:
-        void SetTempProducts();
-        void AllocatePointers();
+        void SetTempProducts(std::string** data, std::string action);
+        void SetProducts(std::string** data, std::string action);
+        void AllocatePointers(std::string action);
         void DeallocatePointers();
         void SizeOfPointers(int* size);
 };

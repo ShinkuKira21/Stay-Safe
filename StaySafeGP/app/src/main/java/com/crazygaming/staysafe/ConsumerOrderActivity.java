@@ -103,6 +103,8 @@ public class ConsumerOrderActivity extends SQLBActivity
         {
             atb.setText("Removed");
 
+            ClassSelector("RFB", resultColsArray);
+
             return;
         }
 

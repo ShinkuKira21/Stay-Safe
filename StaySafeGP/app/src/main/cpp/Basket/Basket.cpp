@@ -2,10 +2,10 @@
 
 #include "Basket.h"
 
-Basket::Basket(std::string** data, std::string action)
+Basket::Basket(std::string** data, int* size, std::string action)
 {
     //THIS WHOLE CLASS SEEMS WASTEFUL ATM
-    //CBInformation* cb = new CBInformation(data, action, 0, nullptr);
+    basket = new CBInformation(data, size, action);
 }
 
 Basket::~Basket()

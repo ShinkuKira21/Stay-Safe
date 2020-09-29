@@ -4,7 +4,10 @@
 
 class Basket
 {
+    protected:
+        CBInformation* basket;
+
     public:
-        Basket(std::string** data, std::string action = "Add");
+        Basket(std::string** data, int* size, std::string action = "ATB");
         ~Basket();
 };
