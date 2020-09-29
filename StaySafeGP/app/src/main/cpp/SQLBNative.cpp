@@ -36,10 +36,9 @@ Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject th
         dataSize[i] = sizeResults[i];
 
     //If selection is equal to ATB
-    if(selection == "ATB")
-    {
-        CBInformation* basket = new CBInformation(SQLQuery, sizeResults, "Add");
-    }
+    if(selection == "ATB" || selection == "RFB")
+        Basket* basket = new Basket(SQLQuery, sizeResults, selection);
+
 }
 
 extern "C"

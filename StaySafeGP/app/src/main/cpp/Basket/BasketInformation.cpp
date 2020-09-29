@@ -3,21 +3,9 @@
 CBInformation::CBInformation(std::string** data, int* size, std::string action)
 {
     SizeOfPointers(size); // Sets the Size of the Pointers
-    AllocatePointers(); // Allocate the Pointers
-    SetTempProducts(); // Sets TempProducts to the Products almost made.
-
-    //Adds extra products to the existing products
-    int dIndex = 0;
-    for (int i = rStart; i < tmpSize; i++) //rStart changes if more products added
-    {
-        for (int j = 0; j < cSize; j++)
-            tmpProducts[j][i] = data[j][dIndex];// add products to tmpProducts
-
-        dIndex++;
-    }
-
-    productCount++; // adds another product
-    products = tmpProducts; // Sets tmpProducts to products.
+    AllocatePointers(action); // Allocate the Pointers
+    SetTempProducts(data, action); // Sets TempProducts to the Products almost made.
+    SetProducts(data, action); // Sets tmpProducts to the Products (to new list)
 }
 
 CBInformation::~CBInformation()
@@ -31,30 +19,99 @@ std::string** CBInformation::GetCBInformation(std::string action)
     return nullptr; // returns nullptr
 }
 
-void CBInformation::SetTempProducts()
+void CBInformation::SetTempProducts(std::string** data, std::string action)
 {
     //This will set products to tmpProducts
-    for (int i = 0; i < productCount; i++)
-        for(int j = 0; j < cSize; j++)
-            tmpProducts[j][i] = products[j][i];
+    if(action == "ATB")
+        for (int i = 0; i < productCount; i++)
+            for(int j = 0; j < cSize; j++)
+                tmpProducts[j][i] = products[j][i];
+
+    if (action == "RFB")
+    {
+        //Declares boolean named bRowMatched and set to false
+        bool bRowMatched = false;
+
+        int dIndex = 0;
+        for (int i = 0; i < productCount; i++)
+        {
+            for (int j = 0; j < cSize; j++)
+            {
+                if (products[j][i] != data[j][0]) // Only add if unique
+                {
+                    bRowMatched = true; // set bRowMatched to true
+                    tmpProducts[j][dIndex] = products[j][i]; //sets tmpProducts to products
+                }
+            }
+
+            if (bRowMatched)
+            {
+                dIndex++; // adds to dIndex
+                bRowMatched = false; // sets bRowMatched to false
+            }
+        }
+
+
+    }
 }
 
-void CBInformation::AllocatePointers()
+void CBInformation::SetProducts(std::string** data, std::string action)
 {
-    //Retrieve sizes
-    tmpSize = rSize;
-
-    //if productCount is not 0, set new tmpSize and rStart.
-    if (productCount != 0)
+    if (action == "ATB")
     {
-        tmpSize = productCount + 1;
-        rStart = productCount; // add 1 to each variable
+        //Adds extra product to the existing products
+        int dIndex = 0;
+        for (int i = rStart; i < tmpSize; i++) //rStart changes if more products added
+        {
+            for (int j = 0; j < cSize; j++)
+                tmpProducts[j][i] = data[j][dIndex];// add products to tmpProducts
+
+            dIndex++;
+        }
+
+        productCount++; // adds another product
+        products = tmpProducts; // Sets tmpProducts to products.
     }
 
-    //Allocates pointer
-    tmpProducts = new std::string * [cSize];
-    for (int i = 0; i < cSize; i++)
-        tmpProducts[i] = new std::string[tmpSize];
+    if (action == "RFB")
+    {
+        //Removes a product from existing products
+        productCount--;
+        products = tmpProducts;
+    }
+}
+
+void CBInformation::AllocatePointers(std::string action)
+{
+    if (action == "ATB")
+    {
+        //Retrieve sizes
+        tmpSize = rSize;
+
+        //if productCount is not 0, set new tmpSize and rStart.
+        if (productCount != 0)
+        {
+            tmpSize = productCount + 1;
+            rStart = productCount; // add 1 to each variable
+        }
+
+        //Allocates pointer
+        tmpProducts = new std::string * [cSize];
+        for (int i = 0; i < cSize; i++)
+            tmpProducts[i] = new std::string[tmpSize];
+    }
+    if (action == "RFB")
+    {
+        //Safety Check
+        if (productCount != 0)
+        {
+            tmpSize = productCount - 1;
+
+            tmpProducts = new std::string * [cSize];
+            for (int i = 0; i < cSize; i++)
+                tmpProducts[i] = new std::string[tmpSize];
+        }
+    }
 }
 
 void CBInformation::DeallocatePointers()
