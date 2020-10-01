@@ -1,3 +1,5 @@
+/* Author: Edward Patch */
+
 package com.crazygaming.staysafe;
 
 import android.os.AsyncTask;
