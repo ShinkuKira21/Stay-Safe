@@ -88,13 +88,9 @@ public class ConsumerOrderActivity extends SQLBActivity
 
         if(action == "ATB" && atb.getText().toString().equals("Adding..."))
         {
-
-            //ClassSelector(action, resultColsArray); // EXECUTES C++ CODE
-
             atb.setText("Added");
 
             ClassSelector(action, resultColsArray);
-            System.out.println(GetData(action));
 
             return; //No need to create layout again
         }
@@ -443,6 +439,8 @@ public class ConsumerOrderActivity extends SQLBActivity
 
         sqlConnection = new SQLConnection(this, "SELECT * FROM products " + querySearch, "", null);
     }
+
+    
 
     // Open Basket Activity
     public void Basket(View view)

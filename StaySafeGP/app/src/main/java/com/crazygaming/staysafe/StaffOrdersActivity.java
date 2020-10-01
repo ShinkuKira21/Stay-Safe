@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 public class StaffOrdersActivity extends SQLBActivity
 {
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

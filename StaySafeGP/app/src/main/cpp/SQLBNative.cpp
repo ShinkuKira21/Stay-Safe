@@ -43,16 +43,25 @@ Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject th
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_crazygaming_staysafe_SQLBActivity_GetData(JNIEnv *env, jobject thiz, jstring action)
+Java_com_crazygaming_staysafe_SQLBActivity_GetData(JNIEnv *env, jobject thiz, jstring action, jint i, jint j)
 {
     Functions* functions = new Functions();
     std::string selection = functions->JStringConverter(env, action);
 
     std::string** info = CBInformation::GetCBInformation();
 
-    if(selection == "ATB")
-    {
-        //return env->NewStringUTF(("Row: " + std::to_string(dataSize[0]) + " Col: " + std::to_string(dataSize[1])).c_str());
-        return env->NewStringUTF(info[2][0].c_str());
-    }
+    //VB - View Basket
+    if(selection == "VB") return env->NewStringUTF(info[j][i].c_str());
+
+    return env->NewStringUTF("");
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_crazygaming_staysafe_SQLBActivity_GetSizes(JNIEnv *env, jobject thiz, jint i)
+{
+    //0 = Row, 1 = Column
+    int sizes[2] = {CBInformation::GetProductRows(), Functions::GetDataCol()};
+
+    return sizes[i];
 }

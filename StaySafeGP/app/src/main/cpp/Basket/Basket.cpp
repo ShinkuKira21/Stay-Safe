@@ -8,7 +8,4 @@ Basket::Basket(std::string** data, int* size, std::string action)
     basket = new CBInformation(data, size, action);
 }
 
-Basket::~Basket()
-{
-
-}
+Basket::~Basket() { }
