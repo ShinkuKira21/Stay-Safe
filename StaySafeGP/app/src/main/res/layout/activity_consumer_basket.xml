@@ -6,4 +6,75 @@
     android:layout_height="match_parent"
     tools:context=".ConsumerBasketActivity">
 
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="131dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:typeface="normal"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/actSignOut"
+        app:layout_constraintStart_toEndOf="@+id/actBack"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Basket" />
+
+    <Button
+        android:id="@+id/actSignOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:onClick="SignOut"
+        android:text="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/actBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:onClick="Basket"
+        android:text="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvTitle"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ScrollView
+        android:id="@+id/svBasket"
+        android:layout_width="319dp"
+        android:layout_height="693dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/actSignOut"
+        app:layout_constraintStart_toStartOf="@+id/actBack"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:id="@+id/liBasket"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="141dp"
+                android:layout_height="match_parent"
+                android:text="@string/app_name"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
