@@ -46,6 +46,15 @@ public class LoginActivity extends SQLBActivity
         sqlConn = new SQLConnection(this, "SELECT * FROM accounts", "Login", userInfo);
     }
 
+    @Override
+    public void SaveRecords(String[] resultColArray, String[][] resultColsArray)
+    {
+        super.SaveRecords(resultColArray, resultColsArray);
+
+        //Record Login Details (RLD)
+        ClassSelector("RLD", resultColsArray);
+    }
+
     //Overrides SQLBActivity's CloseForm function
     @Override
     public void CloseForm(String action, SQLBActivity thiz, Class<?> openActivity)
@@ -57,7 +66,17 @@ public class LoginActivity extends SQLBActivity
 
         else intentActivity = null;
 
+        RecordUsername();
+
         startActivity(intentActivity);
         finish();
+    }
+
+    //Record Username
+    protected void RecordUsername()
+    {
+        String querySearch = "WHERE username = '" + userInfo[0] + "'";
+
+        sqlConn = new SQLConnection(this, "SELECT * FROM accounts " + querySearch, "", null);
     }
 }

@@ -45,7 +45,7 @@ public class ConsumerBasketActivity extends SQLBActivity
     {
         //Row and Col
         for(int i = 0; i < 2; i++)
-            sizes[i] = GetSizes(i); // Sets the sizes
+            sizes[i] = GetSizes("BS", i); // Sets the sizes
 
         currentProducts = new String[sizes[1]][sizes[0]]; // Allocated the currentProducts
         // 2D array.. (Java arrays are nice sometimes over C++ Pointers...)

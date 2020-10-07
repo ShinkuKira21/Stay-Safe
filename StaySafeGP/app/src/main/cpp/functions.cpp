@@ -41,8 +41,6 @@ class Functions
 
             env->ReleaseStringUTFChars(jstr, cchar);
 
-            env->DeleteLocalRef(jstr);
-
             return cchar;
         }
 
@@ -81,6 +79,7 @@ class Functions
                 {
                     jstring currentString = (jstring)env->GetObjectArrayElement(rowSelection, j);
                     conversion[i][j] = env->GetStringUTFChars(currentString, 0);
+                    env->DeleteLocalRef(currentString);
                 }
             }
 

@@ -24,8 +24,8 @@ public class SQLConnection
     protected String server = "staysafe-23.mysql.database.azure.com"; // server name
     protected String prt = "3306"; // server port
     protected String db = "staysafe"; // database name
-    protected String username = "owner@staysafe-23"; // server username
-    protected String pwd = "s5hhYSr@LRyD"; // server password
+    protected String username = "android@staysafe-23"; // server username
+    protected String pwd = "YIHEr2UFUjgemtgn"; // server password
 
     protected String[] resultColArray; // resultSetArray to store the data
     protected String[][] resultColsArray;
@@ -37,13 +37,14 @@ public class SQLConnection
 
     protected String[] userInfo; // User Information
 
-    public SQLConnection(SQLBActivity argSQLBActivity, String argQuery, String argAction, String argExtraData[])
+    public SQLConnection(SQLBActivity argSQLBActivity, String argQuery, String argAction, Object argExtraData)
     {
         activity = argSQLBActivity; // Sets activity to argSQLBActivity
 
         action = argAction; // Sets action to argAction
         query = argQuery; //Sets query to argQuery
-        userInfo = argExtraData; //Sets userInfo to argExtraData
+        if(action == "Login") userInfo = (String[]) argExtraData; //Sets userInfo to argExtraData
+        else resultColsArray = (String[][]) argExtraData;
 
         new Task(this); // Starts up the Task constructor
         //Will be used to communicate directly to the MYSQL Server.
@@ -56,6 +57,8 @@ public class SQLConnection
         if(action == "qRows") QuerySave(); // if action is qRows, call QuerySave.
         if(action == "Login") QueryLogin(); // if action is login, call QueryLogin.
     }
+
+
 
     protected void QueryAction()
     {

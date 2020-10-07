@@ -127,4 +127,5 @@ void CBInformation::SizeOfPointers(int* size)
     //Sets row and col sizes.
     rSize = size[0];
     cSize = size[1];
+    colCount = size[1];
 }
