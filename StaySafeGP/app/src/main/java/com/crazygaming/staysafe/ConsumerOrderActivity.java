@@ -104,8 +104,7 @@ public class ConsumerOrderActivity extends SQLBActivity
             return;
         }
 
-        //Add To Order / Last Added Order #
-        //(THIS HAS TO BE DONE TO CALL C++ TO GENERATE NEW ORDER ID.)
+        //Add To Order / Last Added Order
         if(action == "ATO" || action == "LAP")
         {
             if(action == "ATO")
