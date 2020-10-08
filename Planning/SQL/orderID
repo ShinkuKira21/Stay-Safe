@@ -1,2 +1,18 @@
 Order, PID, R999, CID, R999
-ORD(PID)-0-00-(CID)-0-00 (15)
+ORD(PID)-0-00-(CID)-0-00 (16)
+3   4      10   11   16
+
+
+OR
+
+Order, PID, R999, CID, R999
+ORD-(PID)-0-00-(CID)-0-00 (17)
+4     5    11   12   17
+
+OR
+
+(ACTIVE)
+Order, PID, R999, CID, R999
+0123  4  56789  10 1234
+ORD-(PID)-0-(CID)-0 (11)
+4     5   7   9   11 

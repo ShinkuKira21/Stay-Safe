@@ -27,7 +27,7 @@ public class ConsumerOrderActivity extends SQLBActivity
 
     protected String[] unique; // String Array declaration /\ Will have multiple purposes
     protected String action; // String declaration
-
+    protected String qryAction = ""; // ATO and LAP usage
     protected Button signOut, basket, atb; // Button declaration
     protected String[] names, allergies, images; // Store Names, Allergies, Images
     protected float[] prices; // Store Prices
@@ -104,26 +104,70 @@ public class ConsumerOrderActivity extends SQLBActivity
             return;
         }
 
-        //Account Query
-        if(action == "ATO")
+        //Add To Order / Last Added Order #
+        //(THIS HAS TO BE DONE TO CALL C++ TO GENERATE NEW ORDER ID.)
+        if(action == "ATO" || action == "LAP")
         {
-            String[] loginDetails = new String[GetSizes("LDS", 1)];
+            if(action == "ATO")
+            {
+                String[] loginDetails = new String[GetSizes("LDS", 1)];
 
-            for(int i = 0; i < GetSizes("LDS", 0); i++)
-                for(int j = 0; j < GetSizes("LDS", 1); j++)
-                    loginDetails[j] = GetData("LD", i, j);
+                for(int i = 0; i < GetSizes("LDS", 0); i++)
+                    for(int j = 0; j < GetSizes("LDS", 1); j++)
+                        loginDetails[j] = GetData("LD", i, j);
 
-            if(GetSizes("LDS", 1) == 0)
-                CloseForm("", this, LoginActivity.class); //Send User to Login Screen
+                if(GetSizes("LDS", 1) == 0)
+                    CloseForm("", this, LoginActivity.class); //Send User to Login Screen
 
-            String qryAction;
+                qryAction += resultColsArray[0][0] + ", " + loginDetails[0] + ", '" + loginDetails[3] + "', '" + loginDetails[4] + "', '" + resultColsArray[1][0] + "', '" + resultColsArray[2][0] + "')";
 
-            qryAction = "VALUES('A7262', " + resultColsArray[0][0] + ", " + loginDetails[0] + ", '" + loginDetails[3] + "', '" + loginDetails[4] + "', '" + resultColsArray[1][0] + "', '" + resultColsArray[2][0] + "')";
+                //Stores the relevant information (Product ID, Customer ID)
+                //into names array :D to use in LAP if statement
+                names = new String[2];
+                names[0] = resultColsArray[0][0];
+                names[1] = loginDetails[0];
 
-            System.out.println(qryAction);
+                //Last Added Product
+                action = "LAP";
+                // Gets Last Row from orders table, SQL
+                sqlConnection = new SQLConnection(this, "SELECT id FROM orders ORDER BY id DESC LIMIT 1", "", null);
 
-            sqlConnection = new SQLConnection(this, "INSERT INTO orders(id, productID, customerID, customerFName, customerLName, productName, productCategory) " + qryAction, "Purchase", null);
+                return;
+            }
 
+            if(action == "LAP")
+            {
+                String orderID = "";
+
+                if(resultColsArray[0].length > 0)
+                {
+                    int[] numbers = new int[2]; // we will be adding 1 to two numbers
+
+                    int count = 0; // sets count to 0
+                    for(int i = 0; i < resultColsArray[0][0].length(); i++)
+                    {
+                        if(resultColsArray[0][0].charAt(i) == '-' && resultColsArray[0][0].charAt(i + 1) != '-') // -0-
+                        {
+                            if(i == 5 || i == 9) //if i is 5 or 9 (ORD-0-(0)-0-(0))
+                            {
+                                numbers[count] = Character.getNumericValue(resultColsArray[0][0].charAt(i + 1)); // turns '0' to 0
+                                numbers[count] += 1; // adds 1 to number
+                                count++; // add 1 to count
+                            }
+                        }
+                    }
+
+                    orderID = "ORD-" + names[0] + "-" + numbers[0] + "-" + names[1] + "-" + numbers[1]; // sets order ID to new ID
+                }
+                else orderID = "ORD-" + names[0] + "-0-" + names[1] + "-0"; // Set order ID to 0
+
+                qryAction = "VALUES('" + orderID + "'," + qryAction; // combines orderID to existing qryAction from ATO
+
+                action = ""; // sets action to empty string
+
+                // Executes Insert Data SQL Query
+                sqlConnection = new SQLConnection(this, "INSERT INTO orders(id, productID, customerID, customerFName, customerLName, productName, productCategory) " + qryAction, "Purchase", null);
+            }
         }
 
         //Calls CreateLayout
@@ -471,7 +515,6 @@ public class ConsumerOrderActivity extends SQLBActivity
         //Search Query - Expectation:
         //WHERE name = 'Cappuccino (Medio)'
         String querySearch = "WHERE name = '" + productName + "'";
-
         sqlConnection = new SQLConnection(this, "SELECT * FROM products " + querySearch, "", null);
     }
 
