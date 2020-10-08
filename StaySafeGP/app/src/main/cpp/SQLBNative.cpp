@@ -1,4 +1,4 @@
-#include "Basket/Basket.h"
+#include "Handler/Handler.h"
 
 /* C++ Author: Edward Patch
  * This Library will contain offline tasks. This is to improve performance.
@@ -11,11 +11,15 @@
 int Functions::jCols;
 int Functions::jRows;
 
+//Handler
+std::string** Handler::accountDetails;
+int Handler::rowCount;
+int Handler::colCount;
+
 //BASKET
 std::string** CBInformation::products;
 int CBInformation::productCount;
-
-static int dataSize[2];
+int CBInformation::colCount;
 
 extern "C"
 JNIEXPORT void JNICALL
@@ -32,13 +36,8 @@ Java_com_crazygaming_staysafe_SQLBActivity_ClassSelector(JNIEnv *env, jobject th
 
     int sizeResults[2] = {Functions::GetDataRow(), Functions::GetDataCol()};
 
-    for(int i = 0; i < 2; i++)
-        dataSize[i] = sizeResults[i];
-
     //If selection is equal to ATB
-    if(selection == "ATB" || selection == "RFB")
-        Basket* basket = new Basket(SQLQuery, sizeResults, selection);
-
+    Handler* handle = new Handler(SQLQuery, sizeResults, selection);
 }
 
 extern "C"
@@ -48,20 +47,43 @@ Java_com_crazygaming_staysafe_SQLBActivity_GetData(JNIEnv *env, jobject thiz, js
     Functions* functions = new Functions();
     std::string selection = functions->JStringConverter(env, action);
 
-    std::string** info = CBInformation::GetCBInformation();
+    std::string** info;
 
     //VB - View Basket
-    if(selection == "VB") return env->NewStringUTF(info[j][i].c_str());
+    if(selection == "VB")
+    {
+        info = CBInformation::GetCBInformation();
+        return env->NewStringUTF(info[j][i].c_str());
+    }
+
+    //LD - Login Details
+    if(selection == "LD")
+    {
+        info = Handler::GetAccountDetails();
+        return env->NewStringUTF(info[j][i].c_str());
+    }
 
     return env->NewStringUTF("");
 }
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_com_crazygaming_staysafe_SQLBActivity_GetSizes(JNIEnv *env, jobject thiz, jint i)
-{
-    //0 = Row, 1 = Column
-    int sizes[2] = {CBInformation::GetProductRows(), Functions::GetDataCol()};
+Java_com_crazygaming_staysafe_SQLBActivity_GetSizes(JNIEnv *env, jobject thiz, jstring action, jint i) {
+    Functions *functions = new Functions();
+    std::string selection = functions->JStringConverter(env, action);
 
-    return sizes[i];
+    //Basket Size
+    if (selection == "BS") {
+        int sizes[2] = {CBInformation::GetProductRows(), CBInformation::GetProductCols()};
+        return sizes[i];
+    }
+
+    //Login Detail Size
+    if (selection == "LDS")
+    {
+        int sizes[2] = { Handler::GetRowSize(), Handler::GetColSize() };
+        return sizes[i];
+    }
+
+    return 0;
 }

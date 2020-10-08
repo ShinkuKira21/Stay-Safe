@@ -25,13 +25,13 @@ public class ConsumerOrderActivity extends SQLBActivity
 
     protected TextView tvCategory; // TextView tvCategory
 
-    protected String[] unique; // String Array declaration
+    protected String[] unique; // String Array declaration /\ Will have multiple purposes
     protected String action; // String declaration
-
+    protected String qryAction = ""; // ATO and LAP usage
     protected Button signOut, basket, atb; // Button declaration
     protected String[] names, allergies, images; // Store Names, Allergies, Images
     protected float[] prices; // Store Prices
-    protected int[] calories; // Store Calories
+    protected int[] calories; // Store ID and Calories
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -102,6 +102,72 @@ public class ConsumerOrderActivity extends SQLBActivity
             ClassSelector("RFB", resultColsArray);
 
             return;
+        }
+
+        //Add To Order / Last Added Order #
+        //(THIS HAS TO BE DONE TO CALL C++ TO GENERATE NEW ORDER ID.)
+        if(action == "ATO" || action == "LAP")
+        {
+            if(action == "ATO")
+            {
+                String[] loginDetails = new String[GetSizes("LDS", 1)];
+
+                for(int i = 0; i < GetSizes("LDS", 0); i++)
+                    for(int j = 0; j < GetSizes("LDS", 1); j++)
+                        loginDetails[j] = GetData("LD", i, j);
+
+                if(GetSizes("LDS", 1) == 0)
+                    CloseForm("", this, LoginActivity.class); //Send User to Login Screen
+
+                qryAction += resultColsArray[0][0] + ", " + loginDetails[0] + ", '" + loginDetails[3] + "', '" + loginDetails[4] + "', '" + resultColsArray[1][0] + "', '" + resultColsArray[2][0] + "')";
+
+                //Stores the relevant information (Product ID, Customer ID)
+                //into names array :D to use in LAP if statement
+                names = new String[2];
+                names[0] = resultColsArray[0][0];
+                names[1] = loginDetails[0];
+
+                //Last Added Product
+                action = "LAP";
+                // Gets Last Row from orders table, SQL
+                sqlConnection = new SQLConnection(this, "SELECT id FROM orders ORDER BY id DESC LIMIT 1", "", null);
+
+                return;
+            }
+
+            if(action == "LAP")
+            {
+                String orderID = "";
+
+                if(resultColsArray[0].length > 0)
+                {
+                    int[] numbers = new int[2]; // we will be adding 1 to two numbers
+
+                    int count = 0; // sets count to 0
+                    for(int i = 0; i < resultColsArray[0][0].length(); i++)
+                    {
+                        if(resultColsArray[0][0].charAt(i) == '-' && resultColsArray[0][0].charAt(i + 1) != '-') // -0-
+                        {
+                            if(i == 5 || i == 9) //if i is 5 or 9 (ORD-0-(0)-0-(0))
+                            {
+                                numbers[count] = Character.getNumericValue(resultColsArray[0][0].charAt(i + 1)); // turns '0' to 0
+                                numbers[count] += 1; // adds 1 to number
+                                count++; // add 1 to count
+                            }
+                        }
+                    }
+
+                    orderID = "ORD-" + names[0] + "-" + numbers[0] + "-" + names[1] + "-" + numbers[1]; // sets order ID to new ID
+                }
+                else orderID = "ORD-" + names[0] + "-0-" + names[1] + "-0"; // Set order ID to 0
+
+                qryAction = "VALUES('" + orderID + "'," + qryAction; // combines orderID to existing qryAction from ATO
+
+                action = ""; // sets action to empty string
+
+                // Executes Insert Data SQL Query
+                sqlConnection = new SQLConnection(this, "INSERT INTO orders(id, productID, customerID, customerFName, customerLName, productName, productCategory) " + qryAction, "Purchase", null);
+            }
         }
 
         //Calls CreateLayout
@@ -281,7 +347,7 @@ public class ConsumerOrderActivity extends SQLBActivity
                     //Declares and Initialises the paActionList array
                     LinearLayout[] paActionList = new LinearLayout[names.length];
                         //Declares and Initialises the alPurchase array
-                        Button[] alPurchase = new Button[names.length];
+                        final Button[] alPurchase = new Button[names.length];
 
                         //Declares and Initialises the alAddToBasket array
                         final Button[] alAddToBasket = new Button[names.length];
@@ -327,6 +393,19 @@ public class ConsumerOrderActivity extends SQLBActivity
                             alPurchase[i] = new Button(this);
                             alPurchase[i].setText("Purchase"); //Sets alPurchase button text to Purchase
                             alPurchase[i].setLayoutParams(lpStandard); //Sets LayoutParams to lpStandard
+                            // Wires alPurchase[i] to Purchase Function
+                            final int finalI = i;
+                            alPurchase[i].setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    if(alPurchase[finalI].getText().toString().equals("Purchase"))
+                                        alPurchase[finalI].getText().toString().equals("Purchasing...");
+
+                                    Purchase(names[finalI]);
+                                }
+                            });
 
                             // Creates a new Action List Add to Basket Button.
                             alAddToBasket[i] = new Button(this);
@@ -345,7 +424,7 @@ public class ConsumerOrderActivity extends SQLBActivity
 
                                     else alAddToBasket[finalBasketI].setText("Removing...");
 
-                                    AddToBasket(v, names[finalBasketI]); }
+                                    AddToBasket(names[finalBasketI]); }
                             });
 
                     // Creates a new Product Row Info Layout.
@@ -430,17 +509,24 @@ public class ConsumerOrderActivity extends SQLBActivity
         AvailableProducts(); // Queries for available products
     }
 
-    public void AddToBasket(View view, String productName)
+    public void AddToBasket(String productName)
     {
         action = "ATB"; //Action: Add to Basket
+        //Search Query - Expectation:
+        //WHERE name = 'Cappuccino (Medio)'
+        String querySearch = "WHERE name = '" + productName + "'";
+        sqlConnection = new SQLConnection(this, "SELECT * FROM products " + querySearch, "", null);
+    }
+
+    public void Purchase(String productName)
+    {
+        action = "ATO"; // Action: Add To Order
         //Search Query - Expectation:
         //WHERE name = 'Cappuccino (Medio)'
         String querySearch = "WHERE name = '" + productName + "'";
 
         sqlConnection = new SQLConnection(this, "SELECT * FROM products " + querySearch, "", null);
     }
-
-    
 
     // Open Basket Activity
     public void Basket(View view)
