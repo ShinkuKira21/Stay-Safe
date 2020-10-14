@@ -12,8 +12,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 
-
-
 public class SQLConnection
 {
     SQLBActivity activity; // Declares the SQLBActivity to be used in the class
@@ -21,10 +19,10 @@ public class SQLConnection
     ResultSet resultSet; // Declares the ResultSet to be used in the class and outside of class
     ResultSetMetaData rsMetaData; //Declares the ResultSetMetaData to be used in the class and outside of class
 
-    protected String server = "staysafe-23.mysql.database.azure.com"; // server name
+    protected String server = "86.151.222.202"; // server name
     protected String prt = "3306"; // server port
     protected String db = "staysafe"; // database name
-    protected String username = "android@staysafe-23"; // server username
+    protected String username = "android"; // server username
     protected String pwd = "YIHEr2UFUjgemtgn"; // server password
 
     protected String[] resultColArray; // resultSetArray to store the data
@@ -57,8 +55,6 @@ public class SQLConnection
         if(action == "qRows") QuerySave(); // if action is qRows, call QuerySave.
         if(action == "Login") QueryLogin(); // if action is login, call QueryLogin.
     }
-
-
 
     protected void QueryAction()
     {
@@ -170,6 +166,7 @@ class Task extends AsyncTask<Void, Void, Void>
             Class.forName("com.mysql.jdbc.Driver"); //Gets the JDBC Driver
             //Sets con to the DriverManager's getConnection function. This will connect the following
             //Argument
+            //+ "?useSSL=true&requireSSL=false"
             Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://" + sql.server + ":" + sql.prt + "/" + sql.db + "?useSSL=true&requireSSL=false", sql.username, sql.pwd);
             //Creates the statement by calling con's createStatement function.
             Statement statement = con.createStatement();

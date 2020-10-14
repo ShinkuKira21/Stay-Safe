@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.crazygaming.staysafe.staffArea.StaffOrdersActivity;
+
 //Extends SQLBActivity class.
 public class LoginActivity extends SQLBActivity
 {
@@ -64,7 +66,7 @@ public class LoginActivity extends SQLBActivity
         if (action.equals("Student"))
             intentActivity = new Intent(this, ConsumerOrderActivity.class);
 
-        else intentActivity = null;
+        else intentActivity = new Intent(this, StaffOrdersActivity.class);
 
         RecordUsername();
 

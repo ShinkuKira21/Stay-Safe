@@ -18,7 +18,8 @@ public class ConsumerBasketActivity extends SQLBActivity
     protected TextView tvTitle, tvStatus;
     protected Button actBack, actSignOut;
 
-    protected String action;
+    protected String action, qryAction = "";
+    protected String[] ids;
     protected int[] sizes = new int [2];
     protected String[][] currentProducts, RTB;
     protected double subtotal = 0;
@@ -78,17 +79,79 @@ public class ConsumerBasketActivity extends SQLBActivity
     }
 
     @Override
-    protected void SaveRecords(String[] resultColArray, String[][] resultColsArray)
-    {
+    protected void SaveRecords(String[] resultColArray, String[][] resultColsArray) {
         super.SaveRecords(resultColArray, resultColsArray);
 
-        if(action == "RFB")
-        {
+        System.out.println("Test");
+
+        if (action == "RFB") {
             System.out.println(resultColsArray[1][0]);
             ClassSelector(action, resultColsArray);
 
             finish();
             startActivity(getIntent());
+        }
+
+        //Add To Order / Last Added Order
+        if (action == "ATO" || action == "LAP")
+        {
+            if (action == "ATO")
+            {
+                String[] loginDetails = new String[GetSizes("LDS", 1)];
+
+                for (int i = 0; i < GetSizes("LDS", 0); i++)
+                    for (int j = 0; j < GetSizes("LDS", 1); j++)
+                        loginDetails[j] = GetData("LD", i, j);
+
+                if (GetSizes("LDS", 1) == 0)
+                    CloseForm("", this, LoginActivity.class); //Send User to Login Screen
+
+                qryAction += resultColsArray[0][0] + ", " + loginDetails[0] + ", '" + loginDetails[3] + "', '" + loginDetails[4] + "', '" + resultColsArray[1][0] + "', '" + resultColsArray[2][0] + "')";
+
+                //Stores the relevant information (Product ID, Customer ID)
+                //into names array :D to use in LAP if statement
+                ids = new String[2];
+                ids[0] = resultColsArray[0][0];
+                ids[1] = loginDetails[0];
+
+                //Last Added Product
+                action = "LAP";
+
+                // Gets Last Row from orders table, SQL
+                sqlConnection = new SQLConnection(this, "SELECT id FROM orders ORDER BY id DESC LIMIT 1", "", null);
+            }
+
+            if (action == "LAP")
+            {
+                String orderID = "";
+
+                if (resultColsArray[0].length > 0)
+                {
+                    int[] numbers = new int[2]; // we will be adding 1 to two numbers
+
+                    int count = 0; // sets count to 0
+                    for (int i = 0; i < resultColsArray[0][0].length(); i++) {
+                        if (resultColsArray[0][0].charAt(i) == '-' && resultColsArray[0][0].charAt(i + 1) != '-') // -0-
+                        {
+                            if (i == 5 || i == 9) //if i is 5 or 9 (ORD-0-(0)-0-(0))
+                            {
+                                numbers[count] = Character.getNumericValue(resultColsArray[0][0].charAt(i + 1)); // turns '0' to 0
+                                numbers[count] += 1; // adds 1 to number
+                                count++; // add 1 to count
+                            }
+                        }
+                    }
+
+                    orderID = "ORD-" + ids[0] + "-" + numbers[0] + "-" + ids[1] + "-" + numbers[1]; // sets order ID to new ID
+                } else orderID = "ORD-" + ids[0] + "-0-" + ids[1] + "-0"; // Set order ID to 0
+
+                qryAction = "VALUES('" + orderID + "'," + qryAction; // combines orderID to existing qryAction from ATO
+
+                action = ""; // sets action to empty string
+
+                // Executes Insert Data SQL Query
+                sqlConnection = new SQLConnection(this, "INSERT INTO orders(id, productID, customerID, customerFName, customerLName, productName, productCategory) " + qryAction, "Purchase", null);
+            }
         }
     }
 
@@ -304,6 +367,12 @@ public class ConsumerBasketActivity extends SQLBActivity
             pcaPurchase = new Button(this);
             pcaPurchase.setText("Purchase"); // Sets button text to Purchase
             pcaPurchase.setLayoutParams(lpInvert); // Sets layout to lpInvert
+            pcaPurchase.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Purchase();
+                }
+            });
 
         brProductCheckout.addView(pcTag); // adds pcTag to brProductCheckout
         brProductCheckout.addView(pcSubTotal); // adds pcSubTotal to brProductCheckout
@@ -314,10 +383,21 @@ public class ConsumerBasketActivity extends SQLBActivity
         liBasket.addView(brProductCheckoutActions); // adds brProductCheckoutActions to liBasket
     }
 
-
-
     /* Button Functions*/
-    public void RemoveFromBasket(String productName)
+    protected void Purchase()
+    {
+        for(int i = 0; i < sizes[0]; i++)
+        {
+            action = "ATO"; // Action: Add To Order
+            //Search Query - Expectation
+            //WHERE name = 'Cappuccino (Medio)'
+            String querySearch = "WHERE name = '" + currentProducts[1][i] + "'";
+
+            sqlConnection = new SQLConnection(this, "SELECT * FROM products " + querySearch, "", null);
+        }
+    }
+
+    protected void RemoveFromBasket(String productName)
     {
         action = "RFB"; //Action: Add to Basket
         //Search Query - Expectation:

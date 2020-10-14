@@ -104,8 +104,7 @@ public class ConsumerOrderActivity extends SQLBActivity
             return;
         }
 
-        //Add To Order / Last Added Order #
-        //(THIS HAS TO BE DONE TO CALL C++ TO GENERATE NEW ORDER ID.)
+        //Add To Order / Last Added Order
         if(action == "ATO" || action == "LAP")
         {
             if(action == "ATO")
@@ -234,7 +233,8 @@ public class ConsumerOrderActivity extends SQLBActivity
             ImageView[] imgs = new ImageView[unique.length];
 
             //Dynamically Creates the Front Category Page
-            for (int i = 0; i < unique.length; i++) {
+            for (int i = 0; i < unique.length; i++)
+            {
                 //Creates a new row
                 layoutCategoryRow[i] = new LinearLayout(this);
                 //Sets the layout params to lpStandard
