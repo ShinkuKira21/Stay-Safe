@@ -1,3 +1,8 @@
+/*
+    Author: Edward Patch
+ */
+
+
 package com.crazygaming.staysafe.staffArea;
 
 import androidx.annotation.NonNull;

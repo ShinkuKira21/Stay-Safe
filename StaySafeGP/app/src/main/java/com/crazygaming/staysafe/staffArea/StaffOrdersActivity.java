@@ -1,3 +1,7 @@
+/*
+    Author: Edward Patch
+ */
+
 package com.crazygaming.staysafe.staffArea;
 
 import android.os.Bundle;
@@ -19,6 +23,8 @@ public class StaffOrdersActivity extends SQLBActivity
     protected TabLayout tabLayout;
     protected ViewPager vpSliders;
 
+    protected String[][] orderList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -26,7 +32,6 @@ public class StaffOrdersActivity extends SQLBActivity
         setContentView(R.layout.activity_staff_orders);
 
         FetchOrderList();
-        InitialiseSliders();
     }
 
     @Override
@@ -36,15 +41,22 @@ public class StaffOrdersActivity extends SQLBActivity
 
         if(action.equals("Orders"))
         {
+            //Order List = [Col][Row]
+            orderList = new String[resultColsArray.length][resultColsArray[1].length];
 
+            //Sets orderList to resultColsArray.
+            for(int i = 0; i < resultColsArray.length; i++)
+                for(int j = 0; j < resultColsArray[1].length; j++)
+                    orderList[i][j] = resultColsArray[i][j];
         }
 
+        InitialiseSliders(); // Call InitialiseSliders after Query
     }
 
     protected void InitialiseSliders()
     {
         //Reference: https://www.youtube.com/watch?v=NHBO87ZxGgs, Author:
-        // How to Implement Tablayout With Viewpager in Android Studio
+        // How to Implement Tab Layout With Viewpager in Android Studio
         tabLayout = findViewById(R.id.tabLayout);
         vpSliders = findViewById(R.id.vpSlider);
 
@@ -69,12 +81,14 @@ public class StaffOrdersActivity extends SQLBActivity
         //Initialise Main Fragment
         StaffTabs fragment = new StaffTabs();
 
+        fragment.Set2DArray("Orders", orderList);
+
         for (int i = 0; i < tabList.size(); i++)
         {
             Bundle bundle = new Bundle(); // creates new bundle
-            
-            //Logic Goes In Here
-            bundle.putString("title", tabList.get(i)); // brings over arguments to fragment
+
+            //Bundles will bring over Parameters to Fragment.
+            bundle.putString("action", tabList.get(i));
 
             //Set Argument
             fragment.setArguments(bundle); // sets the arguments in fragment
