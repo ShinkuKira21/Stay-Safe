@@ -106,7 +106,9 @@ public class ConsumerBasketActivity extends SQLBActivity
                 if (GetSizes("LDS", 1) == 0)
                     CloseForm("", this, LoginActivity.class); //Send User to Login Screen
 
-                qryAction += resultColsArray[0][0] + ", " + loginDetails[0] + ", '" + loginDetails[3] + "', '" + loginDetails[4] + "', '" + resultColsArray[1][0] + "', '" + resultColsArray[2][0] + "')";
+                String price = "\u00A3" + resultColsArray[3][0];
+
+                qryAction += resultColsArray[0][0] + ", " + loginDetails[0] + ", '" + loginDetails[3] + "', '" + loginDetails[4] + "', '" + resultColsArray[1][0] + "', '" + resultColsArray[2][0] + "', '" + price + "')";
 
                 //Stores the relevant information (Product ID, Customer ID)
                 //into names array :D to use in LAP if statement
@@ -150,7 +152,7 @@ public class ConsumerBasketActivity extends SQLBActivity
                 action = ""; // sets action to empty string
 
                 // Executes Insert Data SQL Query
-                sqlConnection = new SQLConnection(this, "INSERT INTO orders(id, productID, customerID, customerFName, customerLName, productName, productCategory) " + qryAction, "Purchase", null);
+                sqlConnection = new SQLConnection(this, "INSERT INTO orders(id, productID, customerID, customerFName, customerLName, productName, productCategory, orderPrice) " + qryAction, "Purchase", null);
             }
         }
     }
