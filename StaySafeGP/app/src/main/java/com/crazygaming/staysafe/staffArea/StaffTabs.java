@@ -162,7 +162,6 @@ public class StaffTabs extends Fragment
                                 olOrderInformation[activeMenu].setVisibility(View.VISIBLE);
                             }
                         });
-                    //TODO - Add Functionality to button
 
                     //Initialises Order Information Layout
                     olOrderInformation[i] = new LinearLayout(getContext());
@@ -193,7 +192,6 @@ public class StaffTabs extends Fragment
                             otOrderPrice[i] = new TextView(getContext());
                             otOrderPrice[i].setText("Price: " + orders[10][i]); // Sets text to Price
                             otOrderPrice[i].setLayoutParams(lpInvert); //Sets otOrderPrice to lpInvert
-                            // TODO - Create Price Query
 
                         //Initialises Order Actions Layout
                         oiOrderActions[i] = new LinearLayout(getContext());
@@ -204,10 +202,25 @@ public class StaffTabs extends Fragment
                             oaAcceptOrder[i] = new Button(getContext());
                             oaAcceptOrder[i].setText("Accept Order"); // Sets text to Accept Order
                             oaAcceptOrder[i].setLayoutParams(lpInvert); //Sets oaAcceptOrder to lpInvert
+                            oaAcceptOrder[i].setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    //TODO - Add Functionality Accept Order
+                                }
+                            });
 
                             oaDeclineOrder[i] = new Button(getContext());
                             oaDeclineOrder[i].setText("Decline Order"); // Sets text to Decline Order
                             oaDeclineOrder[i].setLayoutParams(lpInvert); //Sets oaDeclineOrder to lpInvert
+                            oaDeclineOrder[i].setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    //TODO - Add Functionality Decline Order
+                                }
+                            });
+
 
                 oiOrderActions[i].addView(oaAcceptOrder[i]);
                 oiOrderActions[i].addView(oaDeclineOrder[i]);
