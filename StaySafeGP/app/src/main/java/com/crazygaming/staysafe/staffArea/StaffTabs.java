@@ -191,7 +191,7 @@ public class StaffTabs extends Fragment
 
                             //Initialises Order Text Product Price
                             otOrderPrice[i] = new TextView(getContext());
-                            otOrderPrice[i].setText("Price"); // Sets text to Price
+                            otOrderPrice[i].setText("Price: " + orders[10][i]); // Sets text to Price
                             otOrderPrice[i].setLayoutParams(lpInvert); //Sets otOrderPrice to lpInvert
                             // TODO - Create Price Query
 
