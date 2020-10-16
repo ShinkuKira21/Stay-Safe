@@ -293,7 +293,6 @@ public class ConsumerOrderActivity extends SQLBActivity
             LinearLayout.LayoutParams lpWCMP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
             //Sets layoutProductRows to Width = "Match_Parent" and Height = "Wrap_Content"
-            //Sets Bottom Margin to 10
             LinearLayout.LayoutParams lpMPWC = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
             //CUSTOMS
