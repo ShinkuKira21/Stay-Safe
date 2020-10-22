@@ -3,4 +3,7 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="colorBTNDefault">#D8D8D8</color>
+    <color name="colorBTNActive">#7FFFD4</color>
+    <color name="colorBTNAccept">#78AB46</color>
 </resources>
