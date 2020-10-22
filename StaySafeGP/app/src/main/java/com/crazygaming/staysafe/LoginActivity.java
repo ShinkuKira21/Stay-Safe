@@ -66,7 +66,8 @@ public class LoginActivity extends SQLBActivity
         if (action.equals("Student"))
             intentActivity = new Intent(this, ConsumerOrderActivity.class);
 
-        else intentActivity = new Intent(this, StaffOrdersActivity.class);
+        else
+            intentActivity = new Intent(this, StaffOrdersActivity.class);
 
         RecordUsername();
 

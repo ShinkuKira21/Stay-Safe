@@ -5,9 +5,13 @@
 package com.crazygaming.staysafe.staffArea;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.viewpager.widget.ViewPager;
 
+import com.crazygaming.staysafe.LoginActivity;
 import com.crazygaming.staysafe.R;
 import com.crazygaming.staysafe.SQLBActivity;
 import com.crazygaming.staysafe.SQLConnection;
@@ -19,11 +23,15 @@ public class StaffOrdersActivity extends SQLBActivity
 {
     SQLConnection sqlConnection;
 
+    protected Button signOut, refresh;
+    protected TextView tvStaffName;
+
     protected String action;
     protected TabLayout tabLayout;
     protected ViewPager vpSliders;
 
     protected String[][] orderList;
+    protected String[] loginDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,6 +39,14 @@ public class StaffOrdersActivity extends SQLBActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_orders);
 
+        signOut = findViewById(R.id.btnSignOut);
+        refresh = findViewById(R.id.btnRefresh);
+        tvStaffName = findViewById(R.id.tvStaffName);
+
+        signOut.setText("Sign Out");
+        refresh.setText("Refresh");
+
+        StaffName();
         FetchOrderList();
     }
 
@@ -105,5 +121,38 @@ public class StaffOrdersActivity extends SQLBActivity
     {
         action = "Orders";
         sqlConnection = new SQLConnection(this, "SELECT * FROM orders", "", null);
+    }
+
+    protected void StaffName()
+    {
+        String staffName = "";
+
+        loginDetails = new String[GetSizes("LDS", 1)];
+
+        for(int i = 0; i < GetSizes("LDS", 0); i++)
+            for(int j = 0; j < GetSizes("LDS", 1); j++)
+                loginDetails[j] = GetData("LD", i, j);
+
+        if(GetSizes("LDS", 0) == 0)
+            staffName += "Error: Press Refresh/Relog.";
+
+        else
+            staffName += "Staff Name: " + loginDetails[3] + " " + loginDetails[4];
+
+        tvStaffName.setText(staffName);
+    }
+
+    /* Buttons */
+
+    public void SignOut(View view)
+    {
+        CloseForm("", this, LoginActivity.class);
+    }
+
+    public void Refresh(View view)
+    {
+        refresh.setText("Refreshing...");
+        finish();
+        startActivity(getIntent());
     }
 }

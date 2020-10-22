@@ -5,6 +5,7 @@
 
 package com.crazygaming.staysafe.staffArea;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,11 +21,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.crazygaming.staysafe.R;
+import com.crazygaming.staysafe.SQLConnection;
 
 import org.w3c.dom.Text;
 
 public class StaffTabs extends Fragment
 {
+    SQLConnection sqlConnection;
+
     protected View view;
     protected FrameLayout flLayout;
     protected String action;
@@ -111,7 +115,7 @@ public class StaffTabs extends Fragment
                 LinearLayout[] onOrderList = new LinearLayout[orders[1].length];
 
                     //Creates Order ID Buttons (Collapsible Menu)
-                    Button[] olOrderID = new Button[orders[1].length];
+                    final Button[] olOrderID = new Button[orders[1].length];
 
                     //Creates Order Information Layout
                     final LinearLayout[] olOrderInformation = new LinearLayout[orders[1].length];
@@ -143,6 +147,9 @@ public class StaffTabs extends Fragment
                     olOrderID[i] = new Button(getContext());
                     olOrderID[i].setText(orders[0][i]); //Sets text to ID (col) and order (rows)
                     olOrderID[i].setLayoutParams(lpMPWC); //Sets olOrderID to lpMPWC
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && orders[11][i].equals("1"))
+                        olOrderID[i].setBackgroundTintList(getResources().getColorStateList(R.color.colorBTNAccept));
+
                     final int finalI = i;
                     olOrderID[i].setOnClickListener(new View.OnClickListener()
                         {
@@ -151,14 +158,26 @@ public class StaffTabs extends Fragment
                             {
                                 if(activeMenu == finalI)
                                 {
+                                    //Reference: https://stackoverflow.com/questions/54012320/how-to-set-backgroundtintlist-of-a-button-to-default
+                                    //How to Set BackgroundTintList of a button to default?
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && orders[11][finalI].equals("0"))
+                                        olOrderID[finalI].setBackgroundTintList(getResources().getColorStateList(R.color.colorBTNDefault));
+
                                     olOrderInformation[activeMenu].setVisibility(View.GONE);
                                     activeMenu = -1;
                                     return;
                                 }
                                 else if(activeMenu != -1)
+                                {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && orders[11][activeMenu].equals("0"))
+                                        olOrderID[activeMenu].setBackgroundTintList(getResources().getColorStateList(R.color.colorBTNDefault));
                                     olOrderInformation[activeMenu].setVisibility(View.GONE);
+                                }
 
                                 activeMenu = finalI;
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && orders[11][finalI].equals("0"))
+                                    olOrderID[finalI].setBackgroundTintList(getResources().getColorStateList(R.color.colorBTNActive));
+
                                 olOrderInformation[activeMenu].setVisibility(View.VISIBLE);
                             }
                         });
@@ -206,7 +225,14 @@ public class StaffTabs extends Fragment
                                 @Override
                                 public void onClick(View v)
                                 {
-                                    //TODO - Add Functionality Accept Order
+                                    String query = "UPDATE orders SET active = 1 WHERE id = '" +
+                                            orders[0][finalI] + "'";
+
+                                    sqlConnection = new SQLConnection(null, query, "Update", null);
+
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        olOrderID[finalI].setBackgroundTintList(getResources().getColorStateList(R.color.colorBTNAccept));
+                                    }
                                 }
                             });
 
@@ -217,7 +243,9 @@ public class StaffTabs extends Fragment
                                 @Override
                                 public void onClick(View v)
                                 {
-                                    //TODO - Add Functionality Decline Order
+                                    String query = "DELETE FROM orders WHERE id = '" +
+                                            orders[0][finalI] + "'";
+                                    sqlConnection = new SQLConnection(null, query, "Delete", null);
                                 }
                             });
 
