@@ -5,4 +5,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    tools:context=".staffArea.StaffTabs"/>
+    tools:context=".staffArea.StaffTabs">
+
+    <LinearLayout
+        android:id="@+id/layProductControls"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/pcControlList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.50" />
+
+            <Button
+                android:id="@+id/clViewProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="View Products" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4" />
+
+            <Button
+                android:id="@+id/clAddProducts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Add Products" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pcControlCentre"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".40"
+            android:orientation="vertical">
+
+            <WebView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>
