@@ -107,7 +107,7 @@ public class StaffTabs extends Fragment
 
             //Web View is the Staff Control Panel
             ccControlPanel = new WebView(getContext());
-            ccControlPanel.loadUrl("http://109.151.250.18");
+            ccControlPanel.loadUrl("http://109.151.250.18/rbv/staffarea/");
 
             LinearLayout layProductControls = new LinearLayout(getContext());
             layProductControls.setOrientation(LinearLayout.VERTICAL); //Set orientation to Vertical
