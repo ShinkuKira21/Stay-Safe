@@ -1,6 +1,6 @@
 # Stay Safe
 
 ## Authors:
-* Edward Patch
-* Joseph Ross
+* Edward Patch (ShinkuKira)
+* Joseph Ross (RbVortex)
  

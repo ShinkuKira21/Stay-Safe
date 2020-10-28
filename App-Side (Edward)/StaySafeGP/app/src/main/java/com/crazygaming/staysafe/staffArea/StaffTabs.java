@@ -14,10 +14,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Space;
 import android.widget.TextView;
 
 import com.crazygaming.staysafe.R;
@@ -29,6 +32,7 @@ public class StaffTabs extends Fragment
 {
     SQLConnection sqlConnection;
 
+    protected WebView ccControlPanel; // Staff Product Control
     protected View view;
     protected FrameLayout flLayout;
     protected String action;
@@ -70,14 +74,89 @@ public class StaffTabs extends Fragment
         //Sets lpStandard to Width = "Match_Parent" and Height = "Match_Parent"
         LinearLayout.LayoutParams lpStandard = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-        //Sets lpStandard to Width = "Wrap_Content" and Height = "Wrap_Content"
+        //Sets lpInvert to Width = "Wrap_Content" and Height = "Wrap_Content"
         LinearLayout.LayoutParams lpInvert = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        //Sets layoutProductRows to Width = "Wrap_Content" and Height = "Match_Parent"
+        //Sets lpWCMP to Width = "Wrap_Content" and Height = "Match_Parent"
         LinearLayout.LayoutParams lpWCMP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-        //Sets layoutProductRows to Width = "Match_Parent" and Height = "Wrap_Content"
+        //Sets lpMPWC to Width = "Match_Parent" and Height = "Wrap_Content"
         LinearLayout.LayoutParams lpMPWC = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //Sets lpMPWCW5 to Width = "Match_Parent" and Height = "Wrap_Content" and Weight to 50%
+        LinearLayout.LayoutParams lpMPWCW5 = lpMPWC;
+        lpMPWCW5.weight = .5f;
+
+        if(action.equals("Products"))
+        {
+            //LAYOUT CUSTOMS
+            //Prefix Space (W: 60, H: WC, Weight: 50%)
+            LinearLayout.LayoutParams lpPrefixSpace = new LinearLayout.LayoutParams(60, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lpPrefixSpace.weight = .5f;
+
+            //Suffix Space (W: 20, H: WC, Weight: 40%)
+            LinearLayout.LayoutParams lpSuffixSpace = new LinearLayout.LayoutParams(60, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lpSuffixSpace.weight = .4f;
+
+            //Control Panel Layout (W: MP, H: 0, Weight: 40%)
+            LinearLayout.LayoutParams lpControlPanel = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+            lpControlPanel.weight = .4f;
+
+            //REMAKE OF GITHUB, PRODUCTS-DESIGN2-JAVA-WEBVIEW design plan.
+            //Designed by Edward Patch
+
+            //Web View is the Staff Control Panel
+            ccControlPanel = new WebView(getContext());
+            ccControlPanel.loadUrl("http://109.151.250.18/rbv/staffarea/");
+
+            LinearLayout layProductControls = new LinearLayout(getContext());
+            layProductControls.setOrientation(LinearLayout.VERTICAL); //Set orientation to Vertical
+            layProductControls.setLayoutParams(lpStandard); // Set layout to lpStandard
+
+                LinearLayout pcControlList = new LinearLayout(getContext());
+                pcControlList.setOrientation(LinearLayout.HORIZONTAL); //Set orientation to Horizontal
+                pcControlList.setLayoutParams(lpInvert);
+
+                    Space prefixSpace = new Space(getContext());
+                    prefixSpace.setLayoutParams(lpPrefixSpace); // Set layout to lpPrefixSpace
+
+                    Button clViewProducts = new Button(getContext());
+                    clViewProducts.setLayoutParams(lpMPWCW5); // Set layout to lpMPWCW5
+                    clViewProducts.setText("View Products"); // Set button text to View Products
+
+                    Space suffixSpace = new Space(getContext());
+                    suffixSpace.setLayoutParams(lpSuffixSpace); // Set layout to lpSuffixSpace
+
+                    Button clAddProducts = new Button(getContext());
+                    clAddProducts.setLayoutParams(lpStandard); // Set layout to lpStandard
+                    clAddProducts.setText("Add Products"); // Set button text to Add Products
+                    clAddProducts.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //Fix WebView to reload new URL
+                            //REFERENCE: https://stackoverflow.com/questions/7746409/android-webview-launches-browser-when-calling-loadurl
+                            ccControlPanel.setWebViewClient(new WebViewClient());
+                            ccControlPanel.loadUrl("http://109.151.250.18/rbv");
+                        }
+                    });
+
+                LinearLayout pcControlCentre = new LinearLayout(getContext());
+                pcControlCentre.setOrientation(LinearLayout.VERTICAL); // Set orientation to Vertical
+                pcControlCentre.setLayoutParams(lpControlPanel); // Set layout to lpControlPanel
+
+            pcControlCentre.addView(ccControlPanel);
+
+            pcControlList.addView(prefixSpace);
+            pcControlList.addView(clViewProducts);
+
+            pcControlList.addView(suffixSpace);
+            pcControlList.addView(clAddProducts);
+
+            layProductControls.addView(pcControlList);
+            layProductControls.addView(pcControlCentre);
+
+            flLayout.addView(layProductControls);
+        }
 
         if(action.equals("Orders") && orders != null)
         {
@@ -269,10 +348,6 @@ public class StaffTabs extends Fragment
 
             orderView.addView(ovOrderNavigation);
             flLayout.addView(orderView);
-        }
-        else
-        {
-
         }
     }
 }
