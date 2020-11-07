@@ -7,6 +7,7 @@ package com.crazygaming.staysafe;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.crazygaming.staysafe.staffArea.StaffOrdersActivity;
@@ -22,17 +23,23 @@ public class LoginActivity extends SQLBActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login); //sets content view to layout activity_login
 
-        login = findViewById(R.id.login); // sets login to id login
-        error = findViewById(R.id.error); //sets error to id error
+        login = findViewById(R.id.btnLogin); // sets login to id login
+        error = findViewById(R.id.tvError); //sets error to id error
 
-        TextView tvUsername = findViewById(R.id.tvUsername); // sets tvUsername to id tvUsername
         etUsername = findViewById(R.id.editUsername); // sets etUsername to id editUsername
-        tvUsername.setText("Username: "); // sets tvUsername text to Username:
+        etUsername.setHint("Username: "); // sets etUsername hint to Username:
 
-
-        TextView tvPassword = findViewById(R.id.tvPassword); // sets tvPassword to id tvPassword
         etPassword = findViewById(R.id.editPassword); // sets etPassword to id editPassword
-        tvPassword.setText("Password: "); //sets etPassword text to Password:
+        etPassword.setHint("Password: "); //sets etPassword hint to Password:
+
+        register = findViewById(R.id.btnRegister); // sets register to id btnRegister
+        register.setText("Register"); //sets register text to Register.
+
+        CheckBox chkRemember = findViewById(R.id.chkbxRemember);
+        chkRemember.setText("Remember me");
+
+        TextView tvForgotPassword = findViewById(R.id.tvForgotPassword);
+        tvForgotPassword.setText("Forgot Password?");
 
         login.setText("Login"); // Sets login text to Login.
         error.setText("No error"); // Sets error to No error.

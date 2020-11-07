@@ -19,7 +19,7 @@ public class SQLConnection
     ResultSet resultSet; // Declares the ResultSet to be used in the class and outside of class
     ResultSetMetaData rsMetaData; //Declares the ResultSetMetaData to be used in the class and outside of class
 
-    protected String server = "109.151.250.18"; // server name
+    protected String server = "109.147.233.108"; // server name
     protected String prt = "3306"; // server port
     protected String db = "staysafe"; // database name
     protected String username = "android"; // server username

@@ -24,7 +24,7 @@ public class SQLBActivity extends AppCompatActivity
     //Set to null safety checks
     protected TextView error = null, results = null;
     protected EditText etUsername, etPassword;
-    protected Button login;
+    protected Button login, register;
     protected String[] userInfo;
 
     //SaveRecords will allow record saving
