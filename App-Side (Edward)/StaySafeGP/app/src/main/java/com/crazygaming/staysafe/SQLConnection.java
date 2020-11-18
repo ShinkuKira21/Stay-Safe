@@ -19,11 +19,11 @@ public class SQLConnection
     ResultSet resultSet; // Declares the ResultSet to be used in the class and outside of class
     ResultSetMetaData rsMetaData; //Declares the ResultSetMetaData to be used in the class and outside of class
 
-    protected String server = "109.151.250.18"; // server name
-    protected String prt = "3306"; // server port
-    protected String db = "staysafe"; // database name
-    protected String username = "android"; // server username
-    protected String pwd = "YIHEr2UFUjgemtgn"; // server password
+    protected static String server = "82.2.86.25"; // server name
+    protected static String prt = "3306"; // server port
+    protected static String db = "staysafe"; // database name
+    protected static String username = "android"; // server username
+    protected static String pwd = "YIHEr2UFUjgemtgn"; // server password
 
     protected String[] resultColArray; // resultSetArray to store the data
     protected String[][] resultColsArray;
@@ -47,6 +47,8 @@ public class SQLConnection
         new Task(this); // Starts up the Task constructor
         //Will be used to communicate directly to the MYSQL Server.
     }
+
+    public static String GetServer() { return server; }
 
     //Executed after Task is finished.
     protected void SQLFinalised()
