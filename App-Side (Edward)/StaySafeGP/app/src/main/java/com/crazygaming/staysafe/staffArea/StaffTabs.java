@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -26,13 +27,12 @@ import android.widget.TextView;
 import com.crazygaming.staysafe.R;
 import com.crazygaming.staysafe.SQLConnection;
 
-import org.w3c.dom.Text;
-
 public class StaffTabs extends Fragment
 {
     SQLConnection sqlConnection;
 
     protected WebView ccControlPanel; // Staff Product Control
+    protected WebSettings ccWebSettings; // Staff Product Control Web Setting
     protected View view;
     protected FrameLayout flLayout;
     protected String action;
@@ -107,6 +107,8 @@ public class StaffTabs extends Fragment
 
             //Web View is the Staff Control Panel
             ccControlPanel = new WebView(getContext());
+            ccWebSettings = ccControlPanel.getSettings(); //Get's settings of ccControlPanel
+            ccWebSettings.setJavaScriptEnabled(true); // sets ccControlPanel to display JS
             ccControlPanel.loadUrl("http://" + sqlConnection.GetServer() + "/staysafe/staffarea/");
 
             LinearLayout layProductControls = new LinearLayout(getContext());
