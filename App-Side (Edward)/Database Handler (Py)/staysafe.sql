@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : Azure
+ Source Server         : Stay-Safe
  Source Server Type    : MySQL
- Source Server Version : 50642
- Source Host           : staysafe-23.database.windows.net:3306
+ Source Server Version : 100414
+ Source Host           : localhost:3306
  Source Schema         : staysafe
 
  Target Server Type    : MySQL
- Target Server Version : 50642
+ Target Server Version : 100414
  File Encoding         : 65001
 
- Date: 08/10/2020 22:43:05
+ Date: 16/12/2020 21:54:36
 */
 
 SET NAMES utf8mb4;
@@ -31,6 +31,7 @@ CREATE TABLE `accounts`  (
   `email` varchar(60) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `telephoneNumber` varchar(12) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `role` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `picture` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `id`(`id`, `firstName`, `lastName`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
@@ -38,8 +39,8 @@ CREATE TABLE `accounts`  (
 -- ----------------------------
 -- Records of accounts
 -- ----------------------------
-INSERT INTO `accounts` VALUES (0, '1801492', '$2a$11$1P7jTHANKGwerhoA6rzQMOiGHbOf0AbvnBAxEUbVNUqAhgGpRf6Tm', 'Edward', 'Patch', 21, '1801492@student.uwtsd.ac.uk', '07533 897799', 'Student');
-INSERT INTO `accounts` VALUES (1, 'paul.payne', '$2a$11$QuzaKTayy55oj6hsiDq3HuYkZecnBID15uI4hoZ88kWH7K0xHZdES', 'Paul', 'Payne', 31, 'paul.payne@uwtsd.ac.uk', '01792 651423', 'Staff');
+INSERT INTO `accounts` VALUES (0, '1801492', '$2a$11$1P7jTHANKGwerhoA6rzQMOiGHbOf0AbvnBAxEUbVNUqAhgGpRf6Tm', 'Edward', 'Patch', 21, '1801492@student.uwtsd.ac.uk', '07533 897799', 'Student', 'anime1.jpg');
+INSERT INTO `accounts` VALUES (1, 'paul.payne', '$2a$11$QuzaKTayy55oj6hsiDq3HuYkZecnBID15uI4hoZ88kWH7K0xHZdES', 'Paul', 'Payne', 31, 'paul.payne@uwtsd.ac.uk', '01792 651423', 'Staff', 'anime2.png');
 
 -- ----------------------------
 -- Table structure for orders
@@ -47,15 +48,17 @@ INSERT INTO `accounts` VALUES (1, 'paul.payne', '$2a$11$QuzaKTayy55oj6hsiDq3HuYk
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders`  (
   `id` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `productID` int(11) NULL DEFAULT NULL,
-  `customerID` int(11) NULL DEFAULT NULL,
+  `productID` int(11) NOT NULL,
+  `customerID` int(11) NOT NULL,
   `staffID` int(11) NULL DEFAULT NULL,
-  `customerFName` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `customerLName` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `productName` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `productCategory` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `customerFName` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `customerLName` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `productName` varchar(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `productCategory` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `staffFName` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `staffLName` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `orderPrice` varchar(5) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `active` bit(1) NULL DEFAULT NULL,
   `tstamp` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `FK_productID`(`productID`, `productName`, `productCategory`) USING BTREE,
@@ -69,6 +72,13 @@ CREATE TABLE `orders`  (
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
+INSERT INTO `orders` VALUES ('ORD-1-0-0-0', 1, 0, NULL, 'Edward', 'Patch', 'Cappuccino (Primo)', 'Drinks', NULL, NULL, '£2.25', b'1', '2020-12-16 21:53:43');
+INSERT INTO `orders` VALUES ('ORD-2-3-0-3', 2, 0, NULL, 'Edward', 'Patch', 'Cappuccino (Medio)', 'Drinks', NULL, NULL, '£2.55', b'0', '2020-12-16 21:53:49');
+INSERT INTO `orders` VALUES ('ORD-7-1-0-1', 7, 0, NULL, 'Edward', 'Patch', 'Standard Breakfast', 'Food', NULL, NULL, '£3.50', b'1', '2020-12-16 21:53:45');
+INSERT INTO `orders` VALUES ('ORD-7-4-0-4', 7, 0, NULL, 'Edward', 'Patch', 'Standard Breakfast', 'Food', NULL, NULL, '£3.50', b'0', '2020-12-16 21:53:54');
+INSERT INTO `orders` VALUES ('ORD-8-2-0-2', 8, 0, NULL, 'Edward', 'Patch', 'Walkers Crisps (Cheese and Onion)', 'Snack', NULL, NULL, '£1.65', b'0', '2020-12-16 21:53:47');
+INSERT INTO `orders` VALUES ('ORD-8-4-0-4', 8, 0, NULL, 'Edward', 'Patch', 'Walkers Crisps (Cheese and Onion)', 'Snack', NULL, NULL, '£1.65', b'0', '2020-12-16 21:53:56');
+INSERT INTO `orders` VALUES ('ORD-9-3-0-3', 9, 0, NULL, 'Edward', 'Patch', 'Cadbury Creme Eggs', 'Snack', NULL, NULL, '£0.75', b'1', '2020-12-16 21:53:52');
 
 -- ----------------------------
 -- Table structure for products
@@ -99,6 +109,7 @@ INSERT INTO `products` VALUES (5, 'Caffe Latte (Massimo)', 'Drinks', 2.65, 40, '
 INSERT INTO `products` VALUES (6, 'Small Breakfast', 'Food', 1.50, 460, '', -1, 'N/A');
 INSERT INTO `products` VALUES (7, 'Standard Breakfast', 'Food', 3.50, 600, '', -1, 'N/A');
 INSERT INTO `products` VALUES (8, 'Walkers Crisps (Cheese and Onion)', 'Snack', 1.65, 75, 'Vegetarian', 38, 'N/A');
+INSERT INTO `products` VALUES (9, 'Cadbury Creme Eggs', 'Snack', 0.75, 56, 'Eggs, Dairy', 25, 'uploads/s-l640.jpg');
 
 -- ----------------------------
 -- Procedure structure for DeleteOrders
@@ -120,9 +131,9 @@ DROP EVENT IF EXISTS `evtCheckOrders`;
 delimiter ;;
 CREATE EVENT `evtCheckOrders`
 ON SCHEDULE
-EVERY '15' MINUTE STARTS '2020-10-07 21:59:19'
+EVERY '15' MINUTE STARTS '2020-10-06 23:34:34'
 DO DELETE FROM orders
-		WHERE tstamp <= NOW() - INTERVAL 15 MINUTE
+		WHERE tstamp <= NOW() - INTERVAL 15 MINUTE;
 ;;
 delimiter ;
 
@@ -134,6 +145,19 @@ delimiter ;;
 CREATE TRIGGER `triRecordTimestamp` BEFORE INSERT ON `orders` FOR EACH ROW BEGIN 
 	IF NEW.tstamp IS NULL THEN
 		SET NEW.tstamp = CURRENT_TIME;
+	END IF;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table orders
+-- ----------------------------
+DROP TRIGGER IF EXISTS `triActive`;
+delimiter ;;
+CREATE TRIGGER `triActive` BEFORE INSERT ON `orders` FOR EACH ROW BEGIN 
+	IF NEW.active IS NULL THEN
+		SET NEW.active = 0;
 	END IF;
 END
 ;;

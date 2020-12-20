@@ -49,8 +49,8 @@
 
     <ScrollView
         android:id="@+id/svBasket"
-        android:layout_width="319dp"
-        android:layout_height="693dp"
+        android:layout_width="331dp"
+        android:layout_height="629dp"
         android:layout_marginTop="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/actSignOut"

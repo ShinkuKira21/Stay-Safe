@@ -55,8 +55,8 @@
 
     <ScrollView
         android:id="@+id/svProducts"
-        android:layout_width="340dp"
-        android:layout_height="625dp"
+        android:layout_width="334dp"
+        android:layout_height="577dp"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="20dp"
@@ -73,7 +73,7 @@
             android:id="@+id/liProducts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
