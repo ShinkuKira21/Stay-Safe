@@ -36,8 +36,8 @@
 
     <LinearLayout
         android:id="@+id/layoutCategoryCol"
-        android:layout_width="332dp"
-        android:layout_height="629dp"
+        android:layout_width="336dp"
+        android:layout_height="559dp"
         android:layout_marginStart="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="20dp"
