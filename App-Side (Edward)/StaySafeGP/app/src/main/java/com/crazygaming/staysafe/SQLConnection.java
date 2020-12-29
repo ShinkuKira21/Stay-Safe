@@ -48,6 +48,8 @@ public class SQLConnection
         //Will be used to communicate directly to the MYSQL Server.
     }
 
+    public static String GetServer() { return server; }
+
     //Executed after Task is finished.
     protected void SQLFinalised()
     {
