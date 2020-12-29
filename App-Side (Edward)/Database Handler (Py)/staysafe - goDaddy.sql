@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 29, 2020 at 02:08 PM
+-- Generation Time: Dec 29, 2020 at 01:35 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -18,12 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `staysafe`
+-- Database: `foodtray-7261`
 --
 
 -- --------------------------------------------------------
-
-CREATE DATABASE staysafe;
 
 --
 -- Table structure for table `accounts`
@@ -73,32 +71,17 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `productID`, `customerID`, `staffID`, `customerFName`, `customerLName`, `productName`, `productCategory`, `staffFName`, `staffLName`, `orderPrice`, `active`, `tstamp`) VALUES
-('ORD-1-0-0-0', 1, 0, NULL, 'Edward', 'Patch', 'Cappuccino (Primo)', 'Drinks', NULL, NULL, '£2.25', b'0', '2020-12-29 13:07:30'),
-('ORD-1-3-0-3', 1, 0, NULL, 'Edward', 'Patch', 'Cappuccino (Primo)', 'Drinks', NULL, NULL, '£2.25', b'0', '2020-12-29 13:07:39'),
-('ORD-6-1-0-1', 6, 0, NULL, 'Edward', 'Patch', 'Small Breakfast', 'Food', NULL, NULL, '£1.50', b'0', '2020-12-29 13:07:32'),
-('ORD-7-3-0-3', 7, 0, NULL, 'Edward', 'Patch', 'Standard Breakfast', 'Food', NULL, NULL, '£3.50', b'0', '2020-12-29 13:07:42'),
-('ORD-8-2-0-2', 8, 0, NULL, 'Edward', 'Patch', 'Walkers Crisps (Cheese and Onion)', 'Snack', NULL, NULL, '£1.65', b'0', '2020-12-29 13:07:34'),
-('ORD-8-3-0-3', 8, 0, NULL, 'Edward', 'Patch', 'Walkers Crisps (Cheese and Onion)', 'Snack', NULL, NULL, '£1.65', b'0', '2020-12-29 13:07:45');
-
---
 -- Triggers `orders`
 --
+DROP TRIGGER `triActiveTimeStamp`
 DELIMITER $$
-CREATE TRIGGER `triActive` BEFORE INSERT ON `orders` FOR EACH ROW BEGIN 
-	IF NEW.active IS NULL THEN
-		SET NEW.active = 0;
-	END IF;
-END
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `triRecordTimestamp` BEFORE INSERT ON `orders` FOR EACH ROW BEGIN 
+CREATE TRIGGER `triActiveTimeStamp` BEFORE INSERT ON `orders` FOR EACH ROW BEGIN 
 	IF NEW.tstamp IS NULL THEN
 		SET NEW.tstamp = CURRENT_TIME;
+	END IF;
+
+	IF NEW.active IS NULL THEN
+		SET NEW.active = 0;
 	END IF;
 END
 $$
@@ -177,11 +160,6 @@ ALTER TABLE `orders`
   ADD CONSTRAINT `FK_staffID` FOREIGN KEY (`staffID`,`staffFName`,`staffLName`) REFERENCES `accounts` (`id`, `firstName`, `lastName`);
 
 DELIMITER $$
---
--- Events
---
-CREATE DEFINER=`owner`@`%` EVENT `evtCheckOrders` ON SCHEDULE EVERY 15 MINUTE STARTS '2020-10-06 23:34:34' ON COMPLETION NOT PRESERVE ENABLE DO DELETE FROM orders
-		WHERE tstamp <= NOW() - INTERVAL 15 MINUTE;$$
 
 DELIMITER ;
 COMMIT;

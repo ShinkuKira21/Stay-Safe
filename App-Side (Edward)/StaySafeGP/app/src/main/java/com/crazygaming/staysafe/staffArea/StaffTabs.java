@@ -107,9 +107,10 @@ public class StaffTabs extends Fragment
 
             //Web View is the Staff Control Panel
             ccControlPanel = new WebView(getContext());
+
             ccWebSettings = ccControlPanel.getSettings(); //Get's settings of ccControlPanel
             ccWebSettings.setJavaScriptEnabled(true); // sets ccControlPanel to display JS
-            ccControlPanel.loadUrl("http://" + sqlConnection.GetServer() + "/staysafe/staffarea/");
+            ccControlPanel.loadUrl("http://" + sqlConnection.GetServer() + "/sk21/staff");
 
             LinearLayout layProductControls = new LinearLayout(getContext());
             layProductControls.setOrientation(LinearLayout.VERTICAL); //Set orientation to Vertical
@@ -138,7 +139,8 @@ public class StaffTabs extends Fragment
                             //Fix WebView to reload new URL
                             //REFERENCE: https://stackoverflow.com/questions/7746409/android-webview-launches-browser-when-calling-loadurl
                             ccControlPanel.setWebViewClient(new WebViewClient());
-                            ccControlPanel.loadUrl("http://" + sqlConnection.GetServer() + "/staysafe");
+
+                            ccControlPanel.loadUrl("http://" + sqlConnection.GetServer() + "/sk21/staff/staffarea");
                         }
                     });
 
