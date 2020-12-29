@@ -19,10 +19,10 @@ public class SQLConnection
     ResultSet resultSet; // Declares the ResultSet to be used in the class and outside of class
     ResultSetMetaData rsMetaData; //Declares the ResultSetMetaData to be used in the class and outside of class
 
-    public static String server = "86.140.9.3"; // server name
+    public static String server = "foodtray.co.uk"; // server name
     protected String prt = "3306"; // server port
-    protected String db = "staysafe"; // database name
-    protected String username = "android"; // server username
+    protected String db = "foodtray-7261"; // database name
+    protected String username = "android-SK21"; // server username
     protected String pwd = "YIHEr2UFUjgemtgn"; // server password
 
     protected String[] resultColArray; // resultSetArray to store the data

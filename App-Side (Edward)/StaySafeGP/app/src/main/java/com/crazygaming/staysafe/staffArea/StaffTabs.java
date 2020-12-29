@@ -136,7 +136,7 @@ public class StaffTabs extends Fragment
                             //Fix WebView to reload new URL
                             //REFERENCE: https://stackoverflow.com/questions/7746409/android-webview-launches-browser-when-calling-loadurl
                             ccControlPanel.setWebViewClient(new WebViewClient());
-                            ccControlPanel.loadUrl(sqlConnection.server + "/staysafe/staffarea");
+                            ccControlPanel.loadUrl("http://" + sqlConnection.server + "/staysafe/staffarea");
                         }
                     });
 
