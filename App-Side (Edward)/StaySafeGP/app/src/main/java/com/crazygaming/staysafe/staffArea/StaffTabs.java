@@ -110,6 +110,7 @@ public class StaffTabs extends Fragment
 
             ccWebSettings = ccControlPanel.getSettings(); //Get's settings of ccControlPanel
             ccWebSettings.setJavaScriptEnabled(true); // sets ccControlPanel to display JS
+            ccControlPanel.setWebViewClient(new WebViewClient());
             ccControlPanel.loadUrl("http://" + sqlConnection.GetServer() + "/sk21/staff");
 
             LinearLayout layProductControls = new LinearLayout(getContext());
@@ -123,16 +124,23 @@ public class StaffTabs extends Fragment
                     Space prefixSpace = new Space(getContext());
                     prefixSpace.setLayoutParams(lpPrefixSpace); // Set layout to lpPrefixSpace
 
-                    Button clViewProducts = new Button(getContext());
+                    final Button clViewProducts = new Button(getContext());
                     clViewProducts.setLayoutParams(lpMPWCW5); // Set layout to lpMPWCW5
-                    clViewProducts.setText("View Products"); // Set button text to View Products
+                    clViewProducts.setText("Login/Logout"); // Set button text to View Products
+                    clViewProducts.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ccControlPanel.setWebViewClient(new WebViewClient());
+                            ccControlPanel.loadUrl("http://" + sqlConnection.GetServer() + "/sk21/staff/logout.php");
+                        }
+                    });
 
                     Space suffixSpace = new Space(getContext());
                     suffixSpace.setLayoutParams(lpSuffixSpace); // Set layout to lpSuffixSpace
 
                     Button clAddProducts = new Button(getContext());
                     clAddProducts.setLayoutParams(lpStandard); // Set layout to lpStandard
-                    clAddProducts.setText("Add Products"); // Set button text to Add Products
+                    clAddProducts.setText("Product Control"); // Set button text to Add Products
                     clAddProducts.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
