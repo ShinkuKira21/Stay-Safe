@@ -37,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="@+id/divLogin"
         app:layout_constraintStart_toStartOf="@+id/divLogin"
         app:layout_constraintTop_toTopOf="@+id/loginView"
-        app:srcCompat="@android:drawable/ic_menu_report_image" />
+        app:srcCompat="@drawable/logo_transparent" />
 
     <View
         android:id="@+id/divLogin"
@@ -70,8 +70,8 @@
 
     <EditText
         android:id="@+id/editPassword"
-        android:layout_width="0dp"
-        android:layout_height="38dp"
+        android:layout_width="283dp"
+        android:layout_height="43dp"
         android:layout_marginStart="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="8dp"
