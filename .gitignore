@@ -136,3 +136,6 @@ lint/tmp/
 *.exe
 *.ilk
 *.idb
+
+# SQL Files
+*.sql
