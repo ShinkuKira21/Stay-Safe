@@ -12,6 +12,7 @@ function SwitchForm()
 
         registerContainer.style.display = "block";
 		registerContainer.removeAttribute("novalidate");
+		
         currentSelector = false;
 		
     }
@@ -22,6 +23,7 @@ function SwitchForm()
 		
         loginContainer.style.display = "block";
 		loginContainer.removeAttribute("novalidate");
+
         currentSelector = true;
     }
 }

@@ -1,0 +1,42 @@
+.footer-basic {  
+  background-color: #ffffff !important;
+  color: #4b4c4d !important;
+}
+
+.container.basket {
+  background-color: white;
+  border-color: black;
+  border: 1px solid;
+  margin-top: 3%;
+}
+
+.container.basket-2 {
+  background-color: white;
+  border-color: black;
+  border: 1px solid;
+  margin-top: 1%;
+}
+
+body {
+}
+
+#purchase {
+  display: block;
+  width: 80%;
+  border: none;
+  background-color: rgb(253,106,2);
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 20%;
+  margin-left: 12%;
+}
+
+#timeinput {
+	width: 80%;
+	text-align: center;
+	display: block;
+	margin-left: 12%;
+	margin-right: auto;
+}

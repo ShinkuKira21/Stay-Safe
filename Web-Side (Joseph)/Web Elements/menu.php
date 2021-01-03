@@ -28,13 +28,13 @@
 <body style="background-image: url('assets/img/menuimage.jpg'); background-size: 100%; background-repeat: no-repeat; background-color: #070A09;">
     <div>
         <nav class="navbar navbar-light navbar-expand-md navigation-clean">
-            <div class="container"><a class="navbar-brand" href="#"><img height="80px" src = "assets/img/logo.png"> </a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="container"><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse"
-                    id="navcol-1">
+                    id="navcol-1"><img src="assets/img/logo.png">
                     <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item" role="presentation"><a class="nav-link active" href="#"><strong>ACCOUNT</strong></a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#"><strong>YOUR TRAY</strong></a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#"><strong>LOG OUT</strong></a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#"><strong>ACCOUNT</strong></a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="basket.php"><strong>YOUR TRAY</strong></a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="assets/php/logout.php"><strong>LOG OUT</strong></a></li>
                     </ul>
                 </div>
             </div>
@@ -51,7 +51,8 @@
         <div class="row">
             <div class="col" id="company-details">
                 <img src="assets/img/grads-cafe.jpg" id="img-1" class="center" style="width:289px;">
-                <p class="text-center" style="font-size:20px; margin-top: -30px;">UWTSD Waterfront Campus Cafe</p>
+                <p class="text-center" style="font-size:20px; margin-top: -30px;">UWTSD Waterfront Campus Cafe<br>
+				<a href="#" style="font-size: 15px;">Not your location?</a></p>
                 <div class="row">
                     <div class="col text-center font-weight-bold">
                         Monday <br>
@@ -89,7 +90,7 @@
                     {
                         echo "<div class='row'>";
                             echo "<div class='col text-center'>";
-	                                echo "<button class='btn btn-outline-warning font-weight-bold categories' data-toggle='collapse' data-target='#row-".strtolower($row[0])."'>".strtoupper($row[0])."</button>"; #prints each table
+	                                echo "<button class='btn btn-outline-dark font-weight-bold categories' data-toggle='collapse' data-target='#row-".strtolower($row[0])."'>".strtoupper($row[0])."</button>"; #prints each table
 	                                
 									$queryTwo = "SELECT * FROM products WHERE category = '".$row[0]."'";
 									$resultsTwo = mysqli_query($conn, $queryTwo);
