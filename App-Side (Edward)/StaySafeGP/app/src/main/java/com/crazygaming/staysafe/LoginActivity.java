@@ -42,7 +42,7 @@ public class LoginActivity extends SQLBActivity
         tvForgotPassword.setText("Forgot Password?");
 
         login.setText("Login"); // Sets login text to Login.
-        error.setText("No error"); // Sets error to No error.
+        error.setText(""); // Sets error to No error.
     }
 
     public void Login(View view)
