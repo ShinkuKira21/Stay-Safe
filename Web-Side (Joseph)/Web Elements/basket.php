@@ -1,10 +1,13 @@
+<?php session_start();
+		if(@$_SESSION['username'] != "" && isset($_SESSION['username'])) { 
+	?>
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>basket</title>
+    <title>Your Tray</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
     <link rel="stylesheet" href="assets/css/basket.css">
@@ -24,7 +27,7 @@
             </div>
         </div>
     </nav>
-    <div class="container text-center basket" style="height: 325px;">
+    <div class="container text-center basket" style="padding-bottom: 10px;">
         <div class="row">
             <div class="col" style="margin-bottom: 2%;">
                 <h1 style="margin-top: 10px;font-size: 32px;">Your Tray</h1>
@@ -35,27 +38,28 @@
         </div>
         <div class="row">
             <div class="col"><div class="row">
-    <div class="col text-center font-weight-bold">
-        Flat White (Primo) <br>
-                        <br>
-        Small Breakfast <br>
-                        <br>
-        Walkers Crisps <br>
-                        <br>
-        Small Water <br>
-                    <br>
-        TOTAL       <br>
+    <div class="col text-center font-weight-bold" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+        <?php
+			if(count($_SESSION['trayID']) == 0) echo "No Items<br>";
+
+			for($i = 0; $i < count($_SESSION['trayID']); $i++)
+				echo $_SESSION['trayName'][$i]."<br><br>";
+			
+			echo "Total:<br>";
+		?>
     </div>
     <div class="col text-center font-weight-bold">
-            £2.40
-        <br>
-        <br>£1.50
-        <br>
-        <br>£1.69
-        <br>
-        <br>£0.80
-        <br>
-        <br>£6.39
+		<?php 
+			$total = 0;
+			if(count($_SESSION['trayID']) == 0) echo "<br>";
+			for($i = 0; $i < count($_SESSION['trayID']); $i++)
+			{
+				echo "&#163;".$_SESSION['trayPrice'][$i]."<br><br>";
+				$total = number_format($total + $_SESSION['trayPrice'][$i], 2);
+			}
+			
+			echo "&#163;".$total."<br>";
+		?>
     </div>
 </div></div>
 	
@@ -68,6 +72,11 @@
         </div>
     </div>
 
+	<?php
+		}
+		else header("Location: ../");
+	?>
+	
     <div class="footer-basic">
         <footer>
             <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
@@ -78,7 +87,7 @@
                 <li class="list-inline-item"><a href="#">Terms</a></li>
                 <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
             </ul>
-            <p class="copyright">Company Name © 2017</p>
+            <p class="copyright">FoodTray © 2020</p>
         </footer>
     </div>
     <script src="assets/js/jquery.min.js"/>

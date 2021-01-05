@@ -2,7 +2,6 @@
 		if(@$_SESSION['username'] != "" && isset($_SESSION['username'])) { 
 	?>
 	
-	
 <?php
     include "assets/php/dbconnection.php";
 	
@@ -103,7 +102,7 @@
 										?>
 										
 										<form action='assets/php/addtobasket.php' method='post'>
-											<input type="hidden" name="id" value="<?php $row2['id']; ?>">
+											<input type="hidden" name="id" value="<?php echo $row2['id']; ?>"/>
 											<input type="submit" value="Add to Tray">
 										</form>
 										<?php
@@ -133,7 +132,7 @@
                 <li class="list-inline-item"><a href="#">Terms</a></li>
                 <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
             </ul>
-            <p class="copyright">StaySafe © 2020</p>
+            <p class="copyright">FoodTray © 2020</p>
         </footer>
     </div>
     <script src="assets/js/jquery.min.js"></script>

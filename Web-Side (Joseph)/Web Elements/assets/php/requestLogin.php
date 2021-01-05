@@ -4,9 +4,7 @@
 	
 	$loginUsername = $_POST['loginUsername'];
 	$loginPassword = $_POST['loginPassword'];
-	
-	echo $loginUsername;
-	
+		
 	$query = "SELECT * FROM accounts WHERE username = '$loginUsername'";
 	
 	$results = mysqli_query($conn, $query) or die("Wrong Username/Password.");
@@ -17,6 +15,10 @@
 	{
 		$_SESSION['username'] = $loginUsername;
 		$_SESSION['firstName'] = $row['firstName'];
+		$_SESSION['trayID'] = array();
+		$_SESSION['trayName'] = array();
+		$_SESSION['trayPrice'] = array();
+		
 		if($row['role'] == "Staff")
 			header("Location: ../../sk21/staff/staffarea");
 		
@@ -24,5 +26,9 @@
 			header("Location: ../../menu.php");
 	}
 	
-	else echo "Wrong Username/Password.";
+	else 
+	{
+		echo "Wrong Username/Password.";
+		header("refresh:5;url=../../");
+	}
 ?>
